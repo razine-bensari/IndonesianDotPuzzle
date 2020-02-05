@@ -16,6 +16,6 @@ def DFS(tree, max_d):
         return
     
     #Printing node TODO
-    for parentNode, childrenNodes in tree.tree.items():
+    for key, childrenNodes in tree.tree.items():
      for node in childrenNodes:
-          print(parentNode.index," : ",node.index)
+          print(key," : ",node.index)
