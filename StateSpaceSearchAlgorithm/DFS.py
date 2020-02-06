@@ -14,6 +14,8 @@ def DFS(tree, max_d):
     if max_d == 0:
         print("the max depth cannot be 0. Otherwise, DFS will take a long time to compute")
         return
+    
+    
 
 def printTree(tree):
     #Printing node
