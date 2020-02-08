@@ -53,7 +53,7 @@ class IndonesianDotPuzzle:
 
     def generatetreeasadjacencylist(self):
 
-        root = Node(0, 0, 0, copy.deepcopy(self.puzzle))
+        root = Node(0, 0, 0, self.puzzle)
         currentnode = root
 
         nodecounter = 1
@@ -64,14 +64,14 @@ class IndonesianDotPuzzle:
 
         while nodecounter <= maxnodenumber:
             for i in range(numofchildren):
-                childlist, nodecounter = self.generatechildrenfrompuzzlestate(copy.deepcopy(currentnode.puzzleState), nodecounter)
+                childlist, nodecounter = self.generatechildrenfrompuzzlestate(currentnode.puzzleState, nodecounter)
                 self.tree[counter].extend(childlist)
                 currentnode = self.tree[counter//numofchildren][i]
                 counter += 1
 
     def generatechildrenfrompuzzlestate(self, parentpuzzlestate, nodecounter):
         childrenlist = []
-        puzzlestate = copy.deepcopy(parentpuzzlestate)
+        puzzlestate = parentpuzzlestate
         for y in range(int(self.size)):
             for x in range(int(self.size)):
                 childrenlist.append(Node(0, 0, 0, self.touch(y, x, puzzlestate)))
