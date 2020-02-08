@@ -14,7 +14,7 @@ class IndonesianDotPuzzle:
         self.puzzle = []
 
         for row in self.puzzleArray:
-            self.puzzle.append(list(str(row)))
+            self.puzzle.append(str(row))
     
     def touch(self, y, x, puzzlestate):
 
