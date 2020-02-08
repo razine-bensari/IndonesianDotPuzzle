@@ -1,88 +1,86 @@
 from collections import defaultdict
 import textwrap
 
+
 class IndonesianDotPuzzle:
 
-    #Using adjacent list structure (dictionary of all nodes. All values of dic are list of children node related to parent node - Key)
-    def __init__(self, textLine):
+    def __init__(self, textline):
         self.tree = defaultdict(list)
-        self.textArray = textLine.split()
+        self.textArray = textline.split()
         self.size = self.textArray[0]
         self.max_depth = self.textArray[1]
         self.max_length = self.textArray[2]
-        self.puzzleArray = textwrap.wrap(textArray[3], self.size)
+        self.puzzleArray = textwrap.wrap(self.textArray[3], self.size)
         self.puzzle = []
 
         for row in self.puzzleArray:
             self.puzzle.append(list(str(row)))
     
-    def touch(self, y, x, puzzleState):
+    def touch(self, y, x, puzzlestate):
 
-        self.temp = puzzleState
+        temp = puzzlestate
 
         # Always switch the touched value
-        self.temp[y][x] = self.switch(self.temp[y][x])
+        temp[y][x] = self.switch(temp[y][x])
 
-        # Handeling leftmost & rightmost columns
+        # Handling leftmost & rightmost columns
         if y == 0:
-            self.temp[y + self.size][x] = self.switch(self.temp[y + self.size][x])
+            temp[y + self.size][x] = self.switch(temp[y + self.size][x])
         
         if y == self.size - 1:
-            self.temp[y - self.size][x] = self.switch(self.temp[y - self.size][x])
+            temp[y - self.size][x] = self.switch(temp[y - self.size][x])
         
         if y != 0 and y != self.size - 1:
-            self.temp[y + self.size][x] = self.switch(self.temp[y + self.size][x])
-            self.temp[y - self.size][x] = self.switch(self.temp[y - self.size][x])
+            temp[y + self.size][x] = self.switch(temp[y + self.size][x])
+            temp[y - self.size][x] = self.switch(temp[y - self.size][x])
         
         if x == 0:
-            self.temp[y][x + 1] = self.switch(self.temp[y][x + 1])
+            temp[y][x + 1] = self.switch(temp[y][x + 1])
         
         if x == self.size - 1:
-            self.temp[y][x - 1] = self.switch(self.temp[y][x - 1])
+            temp[y][x - 1] = self.switch(temp[y][x - 1])
         
         if x != 0 and x != self.size - 1:
-            self.temp[y][x + 1] = self.switch(self.temp[y][x + 1])
-            self.temp[y][x - 1] = self.switch(self.temp[y][x - 1])
+            temp[y][x + 1] = self.switch(temp[y][x + 1])
+            temp[y][x - 1] = self.switch(temp[y][x - 1])
         
-        return self.temp
+        return temp
 
-    def switch(self, val):
+    @staticmethod
+    def switch(val):
         return 1 - val
 
-    def generateTreeAsAdjacencyList(self):
+    def generatetreeasadjacencylist(self):
 
-        self.root = Node(0, 0, 0, self.puzzle)
-        self.currentNode = self.root
+        root = Node(0, 0, 0, self.puzzle)
+        currentnode = root
 
-        self.nodeCounter = 1
-        self.counter = 0
+        nodecounter = 1
+        counter = 0
 
-        self.numOfChildren = self.size * self.size
-        self.maxNodeNumber = (self.numOfChildren)^self.max_depth
+        numofchildren = self.size * self.size
+        maxnodenumber = numofchildren^self.max_depth
 
+        while nodecounter < maxnodenumber:
+            for i in range(numofchildren):
+                childlist, nodecounter = self.generatechildrenfromnode(currentnode, nodecounter)
+                self.tree[counter].extend(childlist)
+                currentnode = self.tree[counter//numofchildren][i]
+                counter += 1
 
-        while self.nodeCounter < self.maxNodeNumber:
-            #childrenListSpace, nodeCounter = generateChildrenFromNode(currentNode, nodeCounter)
-            for i in range(self.numOfChildren):
-                self.tempChildList, self.nodeCounter = self.generateChildrenFromNode(self, self.currentNode, self.nodeCounter)
-                self.tree[self.counter].extend(self.tempChildList)
-                self.currentNode = self.tree[self.counter//self.numOfChildren][i]
-                self.counter+=1
-
-    def generateChildrenFromNode(self, parentNode, nodeCounter):
-        self.childrenList = []
-        for i in range(self.size):
-                for j in range(self.size):
-                    self.childrenList.append(Node(0, 0, 0, touch(y, x, parentNode.puzzleState)))
-                    self.nodeCounter+=1
-        return self.childrenList, self.nodeCounter
+    def generatechildrenfromnode(self, parentnode, nodecounter):
+        childrenlist = []
+        for y in range(self.size):
+            for x in range(self.size):
+                childrenlist.append(Node(0, 0, 0, self.touch(y, x, parentnode.puzzleState)))
+                nodecounter += 1
+        return childrenlist, nodecounter
 
 
-
-#Node class used for the graph data structure
 class Node:
-    def __init__(self,costValue, heuristicValue,  pathCostValue, puzzleState):
-        self.puzzleState = puzzleState
-        self.fOfN = pathCostValue
-        self.gOfN = costValue
-        self.hOfN = heuristicValue
+
+    def __init__(self, costvalue, heuristicvalue,  pathcostvalue, puzzlestate):
+        self.puzzleState = puzzlestate
+        self.fOfN = pathcostvalue
+        self.gOfN = costvalue
+        self.hOfN = heuristicvalue

@@ -1,0 +1,19 @@
+<component name="ProjectDictionaryState">
+  <dictionary name="razine">
+    <words>
+      <w>childrenlist</w>
+      <w>costvalue</w>
+      <w>currentnode</w>
+      <w>generatechildrenfromnode</w>
+      <w>generatetreeasadjacencylist</w>
+      <w>heuristicvalue</w>
+      <w>maxnodenumber</w>
+      <w>nodecounter</w>
+      <w>numofchildren</w>
+      <w>parentnode</w>
+      <w>pathcostvalue</w>
+      <w>puzzlestate</w>
+      <w>textline</w>
+    </words>
+  </dictionary>
+</component>

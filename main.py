@@ -4,7 +4,7 @@ from StateSpaceSearchAlgorithm.DFS import *
 
 puzzle = IndonesianDotPuzzle("3 5 50 110100110")
 
-puzzle.generateTreeAsAdjacencyList()
+puzzle.generatetreeasadjacencylist()
 
 fileName = "solutiontesting.txt"
 
