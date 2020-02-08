@@ -4,6 +4,8 @@
 # It is possible to optimize this search using recursion or other means, however, for the purpose of this course, the preferred implementation
 # is the one shown in class
 
+
+
 def DFS(tree, max_d):
 
     # Used as Stack
@@ -15,7 +17,7 @@ def DFS(tree, max_d):
         print("the max depth cannot be 0. Otherwise, DFS will take a long time to compute")
         return
     
-    
+
 
 def printTree(tree):
     #Printing node
