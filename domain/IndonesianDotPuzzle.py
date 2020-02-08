@@ -67,14 +67,14 @@ class IndonesianDotPuzzle:
                 self.tempChildList, self.nodeCounter = self.generateChildrenFromNode(self, self.currentNode, self.nodeCounter)
                 self.tree[self.counter].extend(self.tempChildList)
                 self.currentNode = self.tree[self.counter//self.numOfChildren][i]
-                self.counter++
+                self.counter+=1
 
     def generateChildrenFromNode(self, parentNode, nodeCounter):
         self.childrenList = []
         for i in range(self.size):
                 for j in range(self.size):
                     self.childrenList.append(Node(0, 0, 0, touch(y, x, parentNode.puzzleState)))
-                    self.nodeCounter++
+                    self.nodeCounter+=1
         return self.childrenList, self.nodeCounter
 
 
