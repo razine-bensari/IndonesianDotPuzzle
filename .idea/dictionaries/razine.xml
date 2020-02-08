@@ -12,8 +12,10 @@
       <w>nodecounter</w>
       <w>numofchildren</w>
       <w>parentnode</w>
+      <w>parentpuzzlestate</w>
       <w>pathcostvalue</w>
       <w>puzzlestate</w>
+      <w>tempstate</w>
       <w>textline</w>
     </words>
   </dictionary>

@@ -18,7 +18,7 @@ class IndonesianDotPuzzle:
     
     def touch(self, y, x, puzzlestate):
 
-        temp = puzzlestate
+        temp = puzzlestate.copy()
 
         # Always switch the touched value
         temp[y][x] = self.switch(temp[y][x])
@@ -52,7 +52,7 @@ class IndonesianDotPuzzle:
 
     def generatetreeasadjacencylist(self):
 
-        root = Node(0, 0, 0, self.puzzle)
+        root = Node(0, 0, 0, self.puzzle.copy())
         currentnode = root
 
         nodecounter = 1
@@ -61,18 +61,18 @@ class IndonesianDotPuzzle:
         numofchildren = int(self.size) * int(self.size)
         maxnodenumber = numofchildren ** int(self.max_depth)
 
-        while nodecounter < maxnodenumber:
+        while nodecounter <= maxnodenumber:
             for i in range(numofchildren):
-                childlist, nodecounter = self.generatechildrenfromnode(currentnode, nodecounter)
+                childlist, nodecounter = self.generatechildrenfromnode(currentnode.puzzleState.copy(), nodecounter)
                 self.tree[counter].extend(childlist)
                 currentnode = self.tree[counter//numofchildren][i]
                 counter += 1
 
-    def generatechildrenfromnode(self, parentnode, nodecounter):
+    def generatechildrenfromnode(self, parentpuzzlestate, nodecounter):
         childrenlist = []
         for y in range(int(self.size)):
             for x in range(int(self.size)):
-                childrenlist.append(Node(0, 0, 0, self.touch(y, x, parentnode.puzzleState)))
+                childrenlist.append(Node(0, 0, 0, self.touch(y, x, parentpuzzlestate.copy())))
                 nodecounter += 1
         return childrenlist, nodecounter
 
