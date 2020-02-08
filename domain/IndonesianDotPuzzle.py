@@ -54,27 +54,25 @@ class IndonesianDotPuzzle:
         root = Node(0, 0, 0, self.puzzle)
         currentNode = root
 
-        nodeCounter = 0
+        nodeCounter = 1
         counter = 0
 
         maxNodeNumber = (self.size * self.size)^self.max_depth
 
         while nodeCounter < maxNodeNumber:
-            childrenListSpace, nodeCounter = generateChildrenFromNode(currentNode, nodeCounter)
+            #childrenListSpace, nodeCounter = generateChildrenFromNode(currentNode, nodeCounter)
             for i in range(16):
-                tempChildList, nodeCounter = generateChildrenFromNode(childrenListSpace[i], nodeCounter)
+                tempChildList, nodeCounter = generateChildrenFromNode(currentNode, nodeCounter)
                 self.tree[counter].extend(tempChildList)
+                currentNode = self.tree[counter//16][i]
                 counter++
-            
-            index = counter//16
-            currentNode = self.tree[index][0]
 
     def generateChildrenFromNode(parentNode, nodeCounter):
         childrenList = []
         for i in range(self.size):
                 for j in range(self.size):
-                    nodeCounter++
                     childrenList.append(Node(0, 0, 0, touch(y, x, parentNode.puzzleState)))
+                    nodeCounter++
         return childrenList, nodeCounter
             
 
