@@ -11,6 +11,7 @@ fileName = "solutiontesting.txt"
 
 f = open(fileName, "w")
 
-
-
+for i in range(puzzle.tree):
+    f.writelines(puzzle.tree[i])
+    print(puzzle.tree[i])
 f.close()
