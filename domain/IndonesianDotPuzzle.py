@@ -1,3 +1,4 @@
+import copy
 from collections import defaultdict
 import textwrap
 
@@ -18,7 +19,7 @@ class IndonesianDotPuzzle:
     
     def touch(self, y, x, puzzlestate):
 
-        temp = puzzlestate.copy()
+        temp = copy.deepcopy(puzzlestate)
 
         # Always switch the touched value
         temp[y][x] = self.switch(temp[y][x])
@@ -52,7 +53,7 @@ class IndonesianDotPuzzle:
 
     def generatetreeasadjacencylist(self):
 
-        root = Node(0, 0, 0, self.puzzle.copy())
+        root = Node(0, 0, 0, copy.deepcopy(self.puzzle))
         currentnode = root
 
         nodecounter = 1
@@ -63,16 +64,17 @@ class IndonesianDotPuzzle:
 
         while nodecounter <= maxnodenumber:
             for i in range(numofchildren):
-                childlist, nodecounter = self.generatechildrenfromnode(currentnode.puzzleState.copy(), nodecounter)
+                childlist, nodecounter = self.generatechildrenfrompuzzlestate(copy.deepcopy(currentnode.puzzleState), nodecounter)
                 self.tree[counter].extend(childlist)
                 currentnode = self.tree[counter//numofchildren][i]
                 counter += 1
 
-    def generatechildrenfromnode(self, parentpuzzlestate, nodecounter):
+    def generatechildrenfrompuzzlestate(self, parentpuzzlestate, nodecounter):
         childrenlist = []
+        puzzlestate = copy.deepcopy(parentpuzzlestate)
         for y in range(int(self.size)):
             for x in range(int(self.size)):
-                childrenlist.append(Node(0, 0, 0, self.touch(y, x, parentpuzzlestate.copy())))
+                childrenlist.append(Node(0, 0, 0, self.touch(y, x, puzzlestate)))
                 nodecounter += 1
         return childrenlist, nodecounter
 
