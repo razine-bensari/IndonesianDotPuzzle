@@ -9,12 +9,12 @@ class IndonesianDotPuzzle:
         self.textArray = textLine.split()
         self.size = self.textArray[0]
         self.max_depth = self.textArray[1]
-        self.max_length = textArray[2]
+        self.max_length = self.textArray[2]
         self.puzzleArray = textwrap.wrap(textArray[3], self.size)
         self.puzzle = []
 
-        for row in puzzleArray:
-            puzzle.append(list(str(row)))
+        for row in self.puzzleArray:
+            self.puzzle.append(list(str(row)))
     
     def touch(self, y, x, puzzleState):
 
