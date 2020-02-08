@@ -14,7 +14,7 @@ class IndonesianDotPuzzle:
         self.puzzle = []
 
         for row in self.puzzleArray:
-            self.puzzle.append(str(row))
+            self.puzzle.append(list(str(row)))
     
     def touch(self, y, x, puzzlestate):
 
@@ -25,14 +25,14 @@ class IndonesianDotPuzzle:
 
         # Handling leftmost & rightmost columns
         if y == 0:
-            temp[y + self.size][x] = self.switch(temp[y + self.size][x])
+            temp[y + 1][x] = self.switch(temp[y + 1][x])
         
         if y == self.size - 1:
-            temp[y - self.size][x] = self.switch(temp[y - self.size][x])
+            temp[y - 1][x] = self.switch(temp[y - 1][x])
         
         if y != 0 and y != self.size - 1:
-            temp[y + self.size][x] = self.switch(temp[y + self.size][x])
-            temp[y - self.size][x] = self.switch(temp[y - self.size][x])
+            temp[y + 1][x] = self.switch(temp[y + 1][x])
+            temp[y - 1][x] = self.switch(temp[y - 1][x])
         
         if x == 0:
             temp[y][x + 1] = self.switch(temp[y][x + 1])
@@ -59,7 +59,7 @@ class IndonesianDotPuzzle:
         counter = 0
 
         numofchildren = int(self.size) * int(self.size)
-        maxnodenumber = numofchildren ^ int(self.max_depth)
+        maxnodenumber = numofchildren ** int(self.max_depth)
 
         while nodecounter < maxnodenumber:
             for i in range(numofchildren):
