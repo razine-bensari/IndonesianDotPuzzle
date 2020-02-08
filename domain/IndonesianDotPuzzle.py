@@ -30,7 +30,7 @@ class IndonesianDotPuzzle:
         if y == self.size - 1:
             self.temp[y - self.size][x] = self.switch(self.temp[y - self.size][x])
         
-        if y != 0 && y != self.size - 1:
+        if y != 0 and y != self.size - 1:
             self.temp[y + self.size][x] = self.switch(self.temp[y + self.size][x])
             self.temp[y - self.size][x] = self.switch(self.temp[y - self.size][x])
         
@@ -40,7 +40,7 @@ class IndonesianDotPuzzle:
         if x == self.size - 1:
             self.temp[y][x - 1] = self.switch(self.temp[y][x - 1])
         
-        if x != 0 && x != self.size - 1:
+        if x != 0 and x != self.size - 1:
             self.temp[y][x + 1] = self.switch(self.temp[y][x + 1])
             self.temp[y][x - 1] = self.switch(self.temp[y][x - 1])
         
