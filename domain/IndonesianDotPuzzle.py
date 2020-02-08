@@ -7,10 +7,10 @@ class IndonesianDotPuzzle:
     def __init__(self, textline):
         self.tree = defaultdict(list)
         self.textArray = textline.split()
-        self.size = self.textArray[0]
-        self.max_depth = self.textArray[1]
-        self.max_length = self.textArray[2]
-        self.puzzleArray = textwrap.wrap(self.textArray[3], self.size)
+        self.size = int(self.textArray[0])
+        self.max_depth = int(self.textArray[1])
+        self.max_length = int(self.textArray[2])
+        self.puzzleArray = textwrap.wrap(self.textArray[3], int(self.size))
         self.puzzle = []
 
         for row in self.puzzleArray:
@@ -48,7 +48,7 @@ class IndonesianDotPuzzle:
 
     @staticmethod
     def switch(val):
-        return 1 - val
+        return 1 - int(val)
 
     def generatetreeasadjacencylist(self):
 
@@ -58,8 +58,8 @@ class IndonesianDotPuzzle:
         nodecounter = 1
         counter = 0
 
-        numofchildren = self.size * self.size
-        maxnodenumber = numofchildren^self.max_depth
+        numofchildren = int(self.size) * int(self.size)
+        maxnodenumber = numofchildren ^ int(self.max_depth)
 
         while nodecounter < maxnodenumber:
             for i in range(numofchildren):
@@ -70,8 +70,8 @@ class IndonesianDotPuzzle:
 
     def generatechildrenfromnode(self, parentnode, nodecounter):
         childrenlist = []
-        for y in range(self.size):
-            for x in range(self.size):
+        for y in range(int(self.size)):
+            for x in range(int(self.size)):
                 childrenlist.append(Node(0, 0, 0, self.touch(y, x, parentnode.puzzleState)))
                 nodecounter += 1
         return childrenlist, nodecounter
