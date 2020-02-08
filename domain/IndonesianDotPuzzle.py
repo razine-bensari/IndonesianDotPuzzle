@@ -49,11 +49,10 @@ class IndonesianDotPuzzle:
     def switch(val):
         return 1 - val
 
-    def generateTree():
+    def generateTreeAsAdjacencyList():
 
-        listOfNodes = []
         root = Node(0, 0, 0, self.puzzle)
-        listOfNodes.append(root)
+        currentNode = root
 
         nodeCounter = 0
         counter = 0
@@ -61,34 +60,29 @@ class IndonesianDotPuzzle:
         maxNodeNumber = (self.size * self.size)^self.max_depth
 
         while nodeCounter < maxNodeNumber:
-            childrenList, nodeCounter = generateChildrenFromNode(listOfNodes[counter], nodeCounter)
-            listOfNodes.append(childrenList)
-            self.tree[counter].append(childrenList)
-            counter++
-
-    
-
+            childrenListSpace, nodeCounter = generateChildrenFromNode(currentNode, nodeCounter)
+            for i in range(16):
+                tempChildList, nodeCounter = generateChildrenFromNode(childrenListSpace[i], nodeCounter)
+                self.tree[counter].extend(tempChildList)
+                counter++
+            
+            index = counter//16
+            currentNode = self.tree[index][0]
 
     def generateChildrenFromNode(parentNode, nodeCounter):
-        
-        listOfChildrenNode = []
-
+        childrenList = []
         for i in range(self.size):
                 for j in range(self.size):
                     nodeCounter++
-                    listOfChildrenNode.append(Node(nodeCounter, 0, 0, touch(y, x, parentNode.puzzleState)))
-        
-        return (listOfChildrenNode, nodeCounter)
-                    
+                    childrenList.append(Node(0, 0, 0, touch(y, x, parentNode.puzzleState)))
+        return childrenList, nodeCounter
             
 
 
 #Node class used for the graph data structure
 class Node:
-    def __init__(self,index, costValue, heuristicValue, puzzleState, parentNode):
-        self.parentNode = parent
-        self.childrenList = []
-        self.index = index
+    def __init__(self,costValue, heuristicValue,  pathCostValue, puzzleState):
         self.puzzleState = puzzleState
-        self.costValue = costValue
-        self.heuristicValue = heuristicValue
+        self.fOfN = pathCostValue
+        self.gOfN = costValue
+        self.hOfN = heuristicValue
