@@ -113,6 +113,7 @@ def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
         return
     for node in listOfNodes:
         f.write(nodeToString(node, size))
+    f.close()
 
 
 
