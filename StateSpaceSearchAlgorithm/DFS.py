@@ -21,6 +21,7 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
     # Used as Stack
     openlist = []
     closedlist = []
+    listOfParentIndexes = []
 
     openlist.append(rootNode)
 
@@ -34,6 +35,8 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
         if node.puzzlestate == goalstate:
             print("SUCCESS!! the node index is: " + str(node.index))
             f.close()
+            createSolutionIndex(node.index, tree, listOfParentIndexes)
+            outputSolutionPath(listOfParentIndexes, tree, size, testnumber)
             return
             # backtrack using function
         else:
@@ -72,6 +75,7 @@ def puzzleStateToString(puzzlestate, size):
     statestring = statestring + "\n"
     return statestring
 
+
 def isNodeInOpenOrClosedList(node, openlist, closedlist):
     for n in openlist:
         if n.index == node.index:
@@ -80,6 +84,41 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
         if n.index == node.index:
             return True
     return False
+
+
+def createSolutionIndex(nodeindex, stack, size):
+    if nodeindex == 0:
+        return
+    stack.append(nodeindex)
+    for x in range(nodeindex):
+        if ((x * size * size) + 1) <= x <= ((x * size * size) + (size * size) + 1):
+            parentindex = x
+            break
+    createSolutionIndex(parentindex, stack, size)
+
+
+def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
+    listOfNodes = []
+    for index in listOfParentIndexes:
+        for key, nodelist in enumerate(tree):
+            for i, node in enumerate(nodelist):
+                if index == node.index:
+                    listOfNodes.append()
+    if testnumber == 1:
+        f = open("1_dfs_solution.txt", "w")
+    if testnumber == 0:
+        f = open("0_dfs_solution.txt", "w")
+    if testnumber != 1 and testnumber != 0:
+        print("Invalid test number")
+        return
+    for node in listOfNodes:
+        f.write(nodeToString(node, size))
+
+
+
+
+
+
 
 
 def printTree(tree):

@@ -18,11 +18,11 @@ print(testpuzzle1)
 #         for j in range(puzzle.size):
 #             lst[j] = 0
 
-print("\n- - - - - - - - START OF PUZZLE 0 - - - - - - - -\n")
-puzzle0 = IndonesianDotPuzzle(testpuzzle0.rstrip('\n'))
-puzzle0.generatetreeasadjacencylist()
-DFS(puzzle0.tree, puzzle0.max_depth, puzzle0.size, puzzle0.rootnode, puzzle0.maxnodenumber, 1)
-print("\n- - - - - - - - END OF PUZZLE 0 SEARCH - - - - - - - -\n")
+# print("\n- - - - - - - - START OF PUZZLE 0 - - - - - - - -\n")
+# puzzle0 = IndonesianDotPuzzle(testpuzzle0.rstrip('\n'))
+# puzzle0.generatetreeasadjacencylist()
+# DFS(puzzle0.tree, puzzle0.max_depth, puzzle0.size, puzzle0.rootnode, puzzle0.maxnodenumber, 0)
+# print("\n- - - - - - - - END OF PUZZLE 0 SEARCH - - - - - - - -\n")
 
 print("\n- - - - - - - - START OF PUZZLE 1 - - - - - - - -\n")
 puzzle1 = IndonesianDotPuzzle(testpuzzle1.rstrip('\n'))
