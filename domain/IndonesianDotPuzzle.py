@@ -11,6 +11,8 @@ class IndonesianDotPuzzle:
         self.size = int(self.textArray[0])
         self.max_depth = int(self.textArray[1])
         self.max_length = int(self.textArray[2])
+        self.numofchildren = int(self.size) * int(self.size)
+        self.maxnodenumber = self.numofchildren ** int(self.max_depth)
         self.puzzleArray = textwrap.wrap(self.textArray[3], int(self.size))
         self.puzzle = []
 
@@ -61,14 +63,11 @@ class IndonesianDotPuzzle:
         nodecounter = 1
         counter = 0
 
-        numofchildren = int(self.size) * int(self.size)
-        maxnodenumber = numofchildren ** int(self.max_depth)
-
-        while nodecounter <= maxnodenumber:
-            for i in range(numofchildren):
+        while nodecounter <= self.maxnodenumber:
+            for i in range(self.numofchildren):
                 childlist, nodecounter = self.generatechildrenfrompuzzlestate(currentnode.puzzlestate, nodecounter)
                 self.tree[counter].extend(childlist)
-                currentnode = self.tree[counter//numofchildren][i]
+                currentnode = self.tree[counter//self.numofchildren][i]
                 counter += 1
 
     def generatechildrenfrompuzzlestate(self, parentpuzzlestate, nodecounter):
