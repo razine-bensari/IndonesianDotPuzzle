@@ -6,13 +6,14 @@ puzzle = IndonesianDotPuzzle("3 5 50 110100110")
 
 puzzle.generatetreeasadjacencylist()
 
-fileName = "solutiontesting.txt"
+# making one solution inside
+for i, lst in enumerate(puzzle.tree[3][0].puzzlestate):
+        for j in range(puzzle.size):
+            lst[j] = 0
 
 
-f = open(fileName, "w")
 
-for k in puzzle.tree:
-    f.writelines(puzzle.tree[k])
-    print(puzzle.tree[k])
-    
-f.close()
+DFS(puzzle.tree, puzzle.max_depth, puzzle.size, puzzle.rootnode)
+
+
+print("end of main.py")

@@ -9,6 +9,7 @@
       <w>generatechildrenfrompuzzlestate</w>
       <w>generatetreeasadjacencylist</w>
       <w>heuristicvalue</w>
+      <w>isvisited</w>
       <w>maxnodenumber</w>
       <w>nodecounter</w>
       <w>numofchildren</w>

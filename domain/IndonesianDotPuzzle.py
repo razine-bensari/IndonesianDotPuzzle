@@ -14,9 +14,10 @@ class IndonesianDotPuzzle:
         self.puzzleArray = textwrap.wrap(self.textArray[3], int(self.size))
         self.puzzle = []
 
-        for row in self.puzzleArray:
-            self.puzzle.append(list(str(row)))
-    
+        for i, lst in enumerate(self.puzzleArray):
+            lst = [int(i) for i in lst]
+            self.puzzle.append(lst)
+
     def touch(self, y, x, puzzlestate):
 
         temp = copy.deepcopy(puzzlestate)
@@ -53,7 +54,8 @@ class IndonesianDotPuzzle:
 
     def generatetreeasadjacencylist(self):
 
-        root = Node(0, 0, 0, self.puzzle)
+        root = Node(0, 0, 0, 0, self.puzzle)
+        self.rootnode = root
         currentnode = root
 
         nodecounter = 1
@@ -64,7 +66,7 @@ class IndonesianDotPuzzle:
 
         while nodecounter <= maxnodenumber:
             for i in range(numofchildren):
-                childlist, nodecounter = self.generatechildrenfrompuzzlestate(currentnode.puzzleState, nodecounter)
+                childlist, nodecounter = self.generatechildrenfrompuzzlestate(currentnode.puzzlestate, nodecounter)
                 self.tree[counter].extend(childlist)
                 currentnode = self.tree[counter//numofchildren][i]
                 counter += 1
@@ -74,15 +76,17 @@ class IndonesianDotPuzzle:
         puzzlestate = parentpuzzlestate
         for y in range(int(self.size)):
             for x in range(int(self.size)):
-                childrenlist.append(Node(0, 0, 0, self.touch(y, x, puzzlestate)))
+                childrenlist.append(Node(int(nodecounter), 0, 0, 0, self.touch(y, x, puzzlestate)))
                 nodecounter += 1
         return childrenlist, nodecounter
 
 
 class Node:
 
-    def __init__(self, costvalue, heuristicvalue,  pathcostvalue, puzzlestate):
-        self.puzzleState = puzzlestate
+    def __init__(self, index, costvalue, heuristicvalue,  pathcostvalue, puzzlestate):
+        self.index = index
+        self.puzzlestate = puzzlestate
         self.fOfN = pathcostvalue
         self.gOfN = costvalue
         self.hOfN = heuristicvalue
+        self.isvisited = False
