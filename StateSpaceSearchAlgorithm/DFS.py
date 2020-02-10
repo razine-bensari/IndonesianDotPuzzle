@@ -29,14 +29,25 @@ def DFS(tree, max_d, size, rootNode):
             closedlist.append(node)
 
             for node in children:
-                if node in closedlist or openlist:
+                if isNodeInOpenOrClosedList(node, openlist, closedlist):
                     children.remove(node)
             openlist.extend(children)
     print("Did not find any node with goal state")
 
+
 def creategoalstate(size):
     goalstate = [[0] * size for _ in range(size)]
     return goalstate
+
+
+def isNodeInOpenOrClosedList(node, openlist, closedlist):
+    for n in openlist:
+        if n.index == node.index:
+            return True
+    for n in closedlist:
+        if n.index == node.index:
+            return True
+    return False
 
 
 def printTree(tree):

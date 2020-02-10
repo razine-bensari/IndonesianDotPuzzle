@@ -7,7 +7,7 @@ puzzle = IndonesianDotPuzzle("3 5 50 110100110")
 puzzle.generatetreeasadjacencylist()
 
 # making one solution inside
-for i, lst in enumerate(puzzle.tree[3][0].puzzlestate):
+for i, lst in enumerate(puzzle.tree[5][8].puzzlestate):
         for j in range(puzzle.size):
             lst[j] = 0
 
