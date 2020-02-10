@@ -21,7 +21,7 @@ def DFS(tree, max_d, size, rootNode):
     while len(openlist) != 0:
         node = openlist.pop()
         if node.puzzlestate == goalstate:
-            print("SUCCESS")
+            print("SUCCESS!! the node index is: " + str(node.index))
             return
             # backtrack using function
         else:
