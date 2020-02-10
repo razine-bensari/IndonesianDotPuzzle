@@ -100,10 +100,10 @@ def createSolutionIndex(nodeindex, stack, size):
 def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
     listOfNodes = []
     for index in listOfParentIndexes:
-        for key, nodelist in enumerate(tree):
+        for key, nodelist in tree.items():
             for i, node in enumerate(nodelist):
                 if index == node.index:
-                    listOfNodes.append()
+                    listOfNodes.append(node)
     if testnumber == 1:
         f = open("1_dfs_solution.txt", "w")
     if testnumber == 0:
