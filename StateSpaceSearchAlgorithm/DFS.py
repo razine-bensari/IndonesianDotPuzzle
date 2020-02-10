@@ -91,7 +91,9 @@ def createSolutionIndex(nodeindex, stack, size):
         return
     stack.append(nodeindex)
     for x in range(nodeindex):
-        if ((x * size * size) + 1) <= x <= ((x * size * size) + (size * size) + 1):
+        ceilingvalue = ((x * size * size) + 1)
+        floorvalue = ((x * size * size) + (size * size) + 1)
+        if ceilingvalue <= nodeindex <= floorvalue:
             parentindex = x
             createSolutionIndex(parentindex, stack, size)
             break
@@ -111,6 +113,7 @@ def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
     if testnumber != 1 and testnumber != 0:
         print("Invalid test number")
         return
+    listOfNodes.reverse()
     for node in listOfNodes:
         f.write(nodeToString(node, size))
     f.close()
