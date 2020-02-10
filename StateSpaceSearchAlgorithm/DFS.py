@@ -35,7 +35,7 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
         if node.puzzlestate == goalstate:
             print("SUCCESS!! the node index is: " + str(node.index))
             f.close()
-            createSolutionIndex(node.index, tree, listOfParentIndexes)
+            createSolutionIndex(int(node.index), listOfParentIndexes, listOfParentIndexes)
             outputSolutionPath(listOfParentIndexes, tree, size, testnumber)
             return
             # backtrack using function

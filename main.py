@@ -12,11 +12,6 @@ testpuzzle1 = testpuzzle1.rstrip()
 print(testpuzzle0)
 print(testpuzzle1)
 
-# For testing purposes
-# making one solution inside
-# for i, lst in enumerate(puzzle.tree[5][8].puzzlestate):
-#         for j in range(puzzle.size):
-#             lst[j] = 0
 
 # print("\n- - - - - - - - START OF PUZZLE 0 - - - - - - - -\n")
 # puzzle0 = IndonesianDotPuzzle(testpuzzle0.rstrip('\n'))
@@ -25,7 +20,16 @@ print(testpuzzle1)
 # print("\n- - - - - - - - END OF PUZZLE 0 SEARCH - - - - - - - -\n")
 
 print("\n- - - - - - - - START OF PUZZLE 1 - - - - - - - -\n")
-puzzle1 = IndonesianDotPuzzle(testpuzzle1.rstrip('\n'))
+puzzle1 = IndonesianDotPuzzle("3 4 100 111001011")
+
 puzzle1.generatetreeasadjacencylist()
+
+
+# For testing purposes
+# making one solution inside
+for i, lst in enumerate(puzzle1.tree[3][8].puzzlestate):
+    for j in range(puzzle1.size):
+        lst[j] = 0
+
 DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
 print("\n- - - - - - - - END OF PUZZLE 1 SEARCH - - - - - - - -\n")
