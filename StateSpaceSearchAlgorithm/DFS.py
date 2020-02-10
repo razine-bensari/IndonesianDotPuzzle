@@ -36,7 +36,7 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
             print("SUCCESS!! the node index is: " + str(node.index))
             f.close()
             createSolutionIndex(int(node.index), listOfParentIndexes, size)
-            outputSolutionPath(listOfParentIndexes, tree, size, testnumber)
+            outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
             return
             # backtrack using function
         else:
@@ -88,6 +88,7 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
 
 def createSolutionIndex(nodeindex, stack, size):
     if nodeindex == 0:
+        stack.append(nodeindex)
         return
     stack.append(nodeindex)
     for x in range(nodeindex):
@@ -99,7 +100,7 @@ def createSolutionIndex(nodeindex, stack, size):
             break
 
 
-def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
+def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
     listOfNodes = []
     for index in listOfParentIndexes:
         for key, nodelist in tree.items():
@@ -113,6 +114,7 @@ def outputSolutionPath(listOfParentIndexes, tree, size, testnumber):
     if testnumber != 1 and testnumber != 0:
         print("Invalid test number")
         return
+    listOfNodes.append(root)
     listOfNodes.reverse()
     for node in listOfNodes:
         f.write(nodeToString(node, size))

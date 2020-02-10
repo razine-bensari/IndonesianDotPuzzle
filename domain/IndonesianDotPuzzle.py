@@ -55,7 +55,7 @@ class IndonesianDotPuzzle:
         return 1 - int(val)
 
     def generatetreeasadjacencylist(self):
-
+        print("GENERATING TREE. . .")
         root = Node(0, 0, 0, 0, self.puzzle)
         self.rootnode = root
         currentnode = root

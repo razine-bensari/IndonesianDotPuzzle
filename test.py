@@ -1,20 +1,28 @@
-from collections import defaultdict
-import textwrap
+from domain.IndonesianDotPuzzle import *
+from StateSpaceSearchAlgorithm.DFS import *
 
-tree = defaultdict(list)
-list1 = ['s','s','e','w']
-counter = 35
-res = counter//16
-tree[0].extend(list1)
 
-textArray = "3 5 50 110100110".split()
+print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
+puzzle1 = IndonesianDotPuzzle("3 4 100 111001011")
+puzzle1.generatetreeasadjacencylist()
 
-stringgiy = textwrap.wrap(textArray[3], 3)
+# For testing purposes: incorporating a quick to find solution
+for i, lst in enumerate(puzzle1.tree[3][8].puzzlestate):
+    for j in range(puzzle1.size):
+        lst[j] = 0
 
-if isinstance(stringgiy[0], int):
-    print("its an int lol")
-if isinstance(stringgiy[0], str):
-    print("its a string lol")
+DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
+print("\n- - - - - - - - END OF PUZZLE 1 SEARCH TEST- - - - - - - -\n")
 
-print(stringgiy[0])
-print()
+
+# print("\n- - - - - - - - START OF PUZZLE 0 TEST - - - - - - - -\n")
+# puzzle0 = IndonesianDotPuzzle(testpuzzle0.rstrip('\n'))
+# puzzle0.generatetreeasadjacencylist()
+# DFS(puzzle0.tree, puzzle0.max_depth, puzzle0.size, puzzle0.rootnode, puzzle0.maxnodenumber, 0)
+# print("\n- - - - - - - - END OF PUZZLE 0 SEARCH - - - - - - - -\n")
+
+# print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
+# puzzle1 = IndonesianDotPuzzle(testpuzzle1.rstrip('\n'))
+# puzzle1.generatetreeasadjacencylist()
+# DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
+# print("\n- - - - - - - - END OF PUZZLE 1 SEARCH - - - - - - - -\n")
