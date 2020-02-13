@@ -9,15 +9,15 @@ def insertSolutionQuickToFind():
             lst[j] = 0
 
 
-print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
-puzzle1 = IndonesianDotPuzzle("3 4 100 111001011")
-puzzle1.generatetreeasadjacencylist()
+# print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
+# puzzle1 = IndonesianDotPuzzle("3 4 100 111001011")
+# puzzle1.generatetreeasadjacencylist()
 
 # For testing purposes: incorporating a quick to find solution
-insertSolutionQuickToFind()
+#insertSolutionQuickToFind()
 
-DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
-print("\n- - - - - - - - END OF PUZZLE 1 SEARCH TEST- - - - - - - -\n")
+# DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
+# print("\n- - - - - - - - END OF PUZZLE 1 SEARCH TEST- - - - - - - -\n")
 
 # print("\n- - - - - - - - START OF PUZZLE 0 TEST - - - - - - - -\n")
 # puzzle0 = IndonesianDotPuzzle(testpuzzle0.rstrip('\n'))
@@ -25,8 +25,8 @@ print("\n- - - - - - - - END OF PUZZLE 1 SEARCH TEST- - - - - - - -\n")
 # DFS(puzzle0.tree, puzzle0.max_depth, puzzle0.size, puzzle0.rootnode, puzzle0.maxnodenumber, 0)
 # print("\n- - - - - - - - END OF PUZZLE 0 SEARCH - - - - - - - -\n")
 
-# print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
-# puzzle1 = IndonesianDotPuzzle(testpuzzle1.rstrip('\n'))
-# puzzle1.generatetreeasadjacencylist()
-# DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
-# print("\n- - - - - - - - END OF PUZZLE 1 SEARCH - - - - - - - -\n")
+print("\n- - - - - - - - START OF PUZZLE 1 TEST - - - - - - - -\n")
+puzzle1 = IndonesianDotPuzzle("3 4 100 111001011")
+puzzle1.generatetreeasadjacencylist()
+DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
+print("\n- - - - - - - - END OF PUZZLE 1 SEARCH - - - - - - - -\n")

@@ -1,6 +1,7 @@
 from domain.IndonesianDotPuzzle import *
 from StateSpaceSearchAlgorithm.DFS import *
 
+
 testfilename = "test.txt"
 
 f = open(testfilename, "r")

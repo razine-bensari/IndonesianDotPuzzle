@@ -1,6 +1,7 @@
 import copy
 from collections import defaultdict
 import textwrap
+import time
 
 
 class IndonesianDotPuzzle:

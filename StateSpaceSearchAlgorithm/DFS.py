@@ -1,3 +1,4 @@
+import time
 # Implementation of DEPTH FIRST SEARCH (DFS) using a depth length called max_d.
 
 # The implementation of this DFS algorithm will be done using what has been taught in class. It is possible to
@@ -119,12 +120,6 @@ def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
     for node in listOfNodes:
         f.write(nodeToString(node, size))
     f.close()
-
-
-
-
-
-
 
 
 def printTree(tree):
