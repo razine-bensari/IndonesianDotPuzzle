@@ -3,10 +3,11 @@ import time
 
 # The implementation of this DFS algorithm will be done using what has been taught in class. It is possible to
 # optimize this search using recursion or other means, however, for the purpose of this course, the preferred
-# implementation is the one shown in class
+# implementation is the one shown in class (more precisely, the one shown in the slides of the second lecture)
 
 
 def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
+    start = time.time()
     if testnumber == 1:
         f = open("1_dfs_search.txt", "w")
     if testnumber == 0:
@@ -17,6 +18,8 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
 
     if max_d == 0:
         print("the max depth cannot be 0. Otherwise, DFS will take a long time to compute")
+        stop = time.time()
+        print("time to run DFS: " + str((stop - start)))
         return
 
     # Used as Stack
@@ -36,10 +39,13 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
         if node.puzzlestate == goalstate:
             print("SUCCESS!! the node index is: " + str(node.index))
             f.close()
-            createSolutionIndex(int(node.index), listOfParentIndexes, size)
-            outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
+            stop = time.time()
+            print("time to run DFS: " + str((stop - start)))
+            start = time.time()
+            getSolutionPath(int(node.index), listOfParentIndexes, tree, rootNode, size, testnumber)
+            stop = time.time()
+            print("time to backtrack to root node: " + str((stop - start)))
             return
-            # backtrack using function
         else:
             children = tree[node.index]
             closedlist.append(node)
@@ -52,9 +58,13 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
     if maxnodes == counter:
         print("No solution within cuttoff. Maximum number of nodes for given depth is: " + str(maxnodes))
         f.close()
+        stop = time.time()
+        print("time to run DFS: " + str((stop - start)))
         return
     else:
         print("NO SOLUTION")
+        stop = time.time()
+        print("time to run DFS: " + str((stop - start)))
         f.close()
 
 
@@ -120,6 +130,11 @@ def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
     for node in listOfNodes:
         f.write(nodeToString(node, size))
     f.close()
+
+
+def getSolutionPath(nodeindex, listOfParentIndexes, tree, rootNode, size, testnumber):
+    createSolutionIndex(int(nodeindex), listOfParentIndexes, size)
+    outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
 
 
 def printTree(tree):

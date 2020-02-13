@@ -22,6 +22,11 @@ print(testpuzzle1)
 
 print("\n- - - - - - - - START OF PUZZLE 1 - - - - - - - -\n")
 puzzle1 = IndonesianDotPuzzle(testpuzzle1.rstrip('\n'))
+start = time.time()
 puzzle1.generatetreeasadjacencylist()
+stop = time.time()
+
+print("Time to generate the tree as adjacency list: " + str((stop - start)))
+
 DFS(puzzle1.tree, puzzle1.max_depth, puzzle1.size, puzzle1.rootnode, puzzle1.maxnodenumber, 1)
 print("\n- - - - - - - - END OF PUZZLE 1 SEARCH - - - - - - - -\n")

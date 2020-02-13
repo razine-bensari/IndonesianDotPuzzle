@@ -4,6 +4,7 @@
       <w>childlist</w>
       <w>childrenlist</w>
       <w>costvalue</w>
+      <w>creategoalstate</w>
       <w>currentnode</w>
       <w>generatechildrenfromnode</w>
       <w>generatechildrenfrompuzzlestate</w>
@@ -12,12 +13,14 @@
       <w>isvisited</w>
       <w>maxnodenumber</w>
       <w>nodecounter</w>
+      <w>nodeindex</w>
       <w>numofchildren</w>
       <w>parentnode</w>
       <w>parentpuzzlestate</w>
       <w>pathcostvalue</w>
       <w>puzzlestate</w>
       <w>tempstate</w>
+      <w>testnumber</w>
       <w>textline</w>
     </words>
   </dictionary>
