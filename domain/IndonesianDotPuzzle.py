@@ -8,7 +8,6 @@ import time
 class IndonesianDotPuzzle:
 
     def __init__(self, textline):
-        self.tree = defaultdict(list)
         self.textArray = textline.split()
         self.size = int(self.textArray[0])
         self.max_depth = int(self.textArray[1])
@@ -17,6 +16,7 @@ class IndonesianDotPuzzle:
         self.maxnodenumber = self.numofchildren ** int(self.max_depth)
         self.puzzleArray = textwrap.wrap(self.textArray[3], int(self.size))
         self.puzzle = []
+        self.rootnode = Node(0, 0, 0, 0, self.puzzle)
 
         for i, lst in enumerate(self.puzzleArray):
             lst = [int(i) for i in lst]
@@ -56,23 +56,10 @@ class IndonesianDotPuzzle:
     def switch(val):
         return 1 - int(val)
 
-    def generatetreeasadjacencylist(self):
-        print("GENERATING TREE. . .")
-        root = Node(0, 0, 0, 0, self.puzzle)
-        self.rootnode = root
-        currentnode = root
-
-        nodecounter = 1
-        counter = 0
-
-        while nodecounter <= self.maxnodenumber:
-            for i in range(self.numofchildren):
-                childlist, nodecounter = self.generatechildrenfrompuzzlestate(currentnode.puzzlestate, nodecounter)
-                self.tree[counter].extend(childlist)
-                currentnode = self.tree[counter // self.numofchildren][i]
-                counter += 1
-
-    def calculateHofN(self, nodeList):
+    # Heuristic 1
+    # Counts the number of ones in the puzzle state
+    @staticmethod
+    def calculateHofN(nodeList):
         for node in nodeList:
             counter = 0
             for i in node.puzzleState:
@@ -90,6 +77,51 @@ class IndonesianDotPuzzle:
                 self.calculateHofN(childrenlist)
                 nodecounter += 1
         return childrenlist, nodecounter
+
+    def DFS(self):
+        start = time.time()
+        if self.max_depth == 0:
+            print("the max depth cannot be 0. Otherwise, DFS will take a long time to compute")
+            stop = time.time()
+            print("time to run DFS: " + str((stop - start)))
+            return
+
+        # Used as Stack
+        openlist = []
+        closedlist = []
+        listOfParentIndexes = []
+
+        openlist.append(self.rootnode)
+
+        goalstate = creategoalstate(self.size)
+
+        counter = 0
+        print("DFS. . . .")
+        while len(openlist) != 0:
+            node = openlist.pop()
+            if node.puzzlestate == goalstate:
+                print("SUCCESS!! the node index is: " + str(node.index))
+                stop = time.time()
+                print("time to run DFS: " + str((stop - start)))
+                # No need for solution path for dfs because we already demoed the code
+                return
+            else:
+                children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter)
+                closedlist.append(node)
+                for node in children:
+                    if isNodeInOpenOrClosedList(node, openlist, closedlist):
+                        children.remove(node)
+                openlist.extend(children)
+            counter += 1
+        if self.maxnodenumber == counter:
+            print("No solution within cutoff. Maximum number of nodes for given depth is: " + str(self.maxnodenumber))
+            stop = time.time()
+            print("time to run DFS: " + str((stop - start)))
+            return
+        else:
+            print("NO SOLUTION")
+            stop = time.time()
+            print("time to run DFS: " + str((stop - start)))
 
     def BFS(self):
         start = time.time()
@@ -110,9 +142,10 @@ class IndonesianDotPuzzle:
 
         goalstate = creategoalstate(self.size)
 
-        counter = 0
+        counter = 1
         print("BFS. . . .")
         while openlist.qsize() != 0:
+            #node = getNextNodeFromQueue(openlist.queue, openlist.get()) TODO
             node = openlist.get()
             if node.puzzlestate == goalstate:
                 print("SUCCESS!! the node index is: " + str(node.index))
@@ -125,12 +158,11 @@ class IndonesianDotPuzzle:
                 children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter)
                 closedlist.append(node)
                 for node in children:
-                    if isNodeInOpenOrClosedList(node, openlist, closedlist):
+                    if isNodeInOpenOrClosedList(node, openlist.queue, closedlist):
                         children.remove(node)
                 openlist = addChildrenToOpenList(children, openlist)
-            counter += 1
         if len(closedlist) == self.max_length:
-            print("No solution within cuttoff of max_length. Maximum length reach is  " + str(len(closedlist)))
+            print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
             stop = time.time()
             print("time to run BFS: " + str((stop - start)))
             return
@@ -143,6 +175,15 @@ class IndonesianDotPuzzle:
 def creategoalstate(size):
     goalstate = [[0] * size for _ in range(size)]
     return goalstate
+
+# This method returns the best not from the queue given a tie in HofN
+# Implementation based on what has been asked from the project handout
+# def getNextNodeFromQueue(openList, nodeFromGet):
+#     nodeToReturn = None
+#     for node in openList:
+#         if node.hOfN = nodeFromGet.hOfN
+
+
 
 
 def nodeToString(node, size):
@@ -195,6 +236,39 @@ def printTree(tree):
     for key, childrenNodes in tree.items():
         for node in childrenNodes:
             print(key, " : ", node.index)
+
+
+def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
+    listOfNodes = []
+    for index in listOfParentIndexes:
+        for key, nodelist in tree.items():
+            for i, node in enumerate(nodelist):
+                if index == node.index:
+                    listOfNodes.append(node)
+    if testnumber == 1:
+        f = open("1_dfs_solution.txt", "w")
+    if testnumber == 0:
+        f = open("0_dfs_solution.txt", "w")
+    if testnumber == 2:
+        f = open("2_dfs_solution.txt", "w")
+    if testnumber == 3:
+        f = open("3_dfs_solution.txt", "w")
+    if testnumber == 4:
+        f = open("4_dfs_solution.txt", "w")
+    if testnumber == 5:
+        f = open("5_dfs_solution.txt", "w")
+    if testnumber != 1 and testnumber != 0 and testnumber != 2 and testnumber != 3 and testnumber != 4 and testnumber != 5:
+        print("Invalid test number")
+        return
+    listOfNodes.append(root)
+    listOfNodes.reverse()
+    for node in listOfNodes:
+        f.write(nodeToString(node, size))
+    f.close()
+
+def getSolutionPath(nodeindex, listOfParentIndexes, tree, rootNode, size, testnumber):
+    createSolutionIndex(int(nodeindex), listOfParentIndexes, size)
+    outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
 
 
 class Node:

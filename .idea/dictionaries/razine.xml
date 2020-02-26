@@ -1,27 +1,33 @@
 <component name="ProjectDictionaryState">
   <dictionary name="razine">
     <words>
+      <w>ceilingvalue</w>
       <w>childlist</w>
       <w>childrenlist</w>
       <w>closedlist</w>
       <w>costvalue</w>
       <w>creategoalstate</w>
       <w>currentnode</w>
+      <w>floorvalue</w>
       <w>generatechildrenfromnode</w>
       <w>generatechildrenfrompuzzlestate</w>
       <w>generatetreeasadjacencylist</w>
       <w>goalstate</w>
       <w>heuristicvalue</w>
       <w>isvisited</w>
+      <w>linetoprint</w>
       <w>maxnodenumber</w>
       <w>nodecounter</w>
       <w>nodeindex</w>
       <w>numofchildren</w>
       <w>openlist</w>
+      <w>parentindex</w>
       <w>parentnode</w>
       <w>parentpuzzlestate</w>
       <w>pathcostvalue</w>
       <w>puzzlestate</w>
+      <w>rootnode</w>
+      <w>statestring</w>
       <w>tempstate</w>
       <w>testnumber</w>
       <w>textline</w>
