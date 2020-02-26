@@ -3,18 +3,21 @@
     <words>
       <w>childlist</w>
       <w>childrenlist</w>
+      <w>closedlist</w>
       <w>costvalue</w>
       <w>creategoalstate</w>
       <w>currentnode</w>
       <w>generatechildrenfromnode</w>
       <w>generatechildrenfrompuzzlestate</w>
       <w>generatetreeasadjacencylist</w>
+      <w>goalstate</w>
       <w>heuristicvalue</w>
       <w>isvisited</w>
       <w>maxnodenumber</w>
       <w>nodecounter</w>
       <w>nodeindex</w>
       <w>numofchildren</w>
+      <w>openlist</w>
       <w>parentnode</w>
       <w>parentpuzzlestate</w>
       <w>pathcostvalue</w>

@@ -12,7 +12,15 @@ def DFS(tree, max_d, size, rootNode, maxnodes, testnumber):
         f = open("1_dfs_search.txt", "w")
     if testnumber == 0:
         f = open("0_dfs_search.txt", "w")
-    if testnumber != 1 and testnumber != 0:
+    if testnumber == 2:
+        f = open("2_dfs_search.txt", "w")
+    if testnumber == 3:
+        f = open("3_dfs_search.txt", "w")
+    if testnumber == 4:
+        f = open("4_dfs_search.txt", "w")
+    if testnumber == 5:
+        f = open("5_dfs_search.txt", "w")
+    if testnumber != 1 and testnumber != 0 and testnumber != 2 and testnumber != 3 and  testnumber != 4 and testnumber != 5:
         print("Invalid test number")
         return
 
@@ -122,7 +130,15 @@ def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
         f = open("1_dfs_solution.txt", "w")
     if testnumber == 0:
         f = open("0_dfs_solution.txt", "w")
-    if testnumber != 1 and testnumber != 0:
+    if testnumber == 2:
+        f = open("2_dfs_solution.txt", "w")
+    if testnumber == 3:
+        f = open("3_dfs_solution.txt", "w")
+    if testnumber == 4:
+        f = open("4_dfs_solution.txt", "w")
+    if testnumber == 5:
+        f = open("5_dfs_solution.txt", "w")
+    if testnumber != 1 and testnumber != 0 and testnumber != 2 and testnumber != 3 and testnumber != 4 and testnumber != 5:
         print("Invalid test number")
         return
     listOfNodes.append(root)
