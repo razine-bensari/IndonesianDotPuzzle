@@ -8,6 +8,7 @@
       <w>costvalue</w>
       <w>creategoalstate</w>
       <w>currentnode</w>
+      <w>distinguisher</w>
       <w>floorvalue</w>
       <w>generatechildrenfromnode</w>
       <w>generatechildrenfrompuzzlestate</w>

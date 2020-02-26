@@ -144,7 +144,7 @@ class IndonesianDotPuzzle:
                 for node in children:
                     if isNodeInOpenOrClosedList(node, openlist, closedlist):
                         children.remove(node)
-                openlist.extend(children)
+                openlist = addChildrenToOpenList(children, openlist, "DFS")
             counter += 1
         if self.maxnodenumber == counter:
             print("No solution within cutoff. Maximum number of nodes for given depth is: " + str(self.maxnodenumber))
@@ -293,15 +293,17 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
 #             break
 
 
-def addChildrenToOpenList(children, openlist, str):
-    if str == "BFS":
+def addChildrenToOpenList(children, openlist, distinguisher):
+    if distinguisher == "BFS":
         for node in children:
             openlist.put(((node.hOfN, node.earliestWhiteDot), node))
         return openlist
-    else:
+    elif distinguisher == "A*":
         for node in children:
             openlist.put(((node.fOfN, node.earliestWhiteDot), node))
         return openlist
+    elif distinguisher == "DFS":
+        return openlist.extend(children)
 
 
 def printTree(tree):
