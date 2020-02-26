@@ -95,10 +95,9 @@ class IndonesianDotPuzzle:
 
     def generatechildrenfrompuzzlestate(self, node, nodecounter, depthLevel):
         childrenlist = []
-        puzzlestate = node.puzzlestate
         for y in range(int(self.size)):
             for x in range(int(self.size)):
-                newPuzzleState = self.touch(y, x, puzzlestate)
+                newPuzzleState = self.touch(y, x, node.puzzlestate)
                 hOfN = self.calculateHofN_one(newPuzzleState)
                 gOfN = self.calculateGofN(node)
                 fOfN = self.calculateFofN(node)
@@ -140,7 +139,7 @@ class IndonesianDotPuzzle:
                 # No need for solution path for dfs because we already demoed the code
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
                 closedlist.append(node)
                 for node in children:
                     if isNodeInOpenOrClosedList(node, openlist, closedlist):
@@ -187,7 +186,7 @@ class IndonesianDotPuzzle:
                 # solution path here
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
                 closedlist.append(node)
                 if counter % 10007 == 0:
                     print("Visited a thousand node: " + nodeToString(node, self.size))
@@ -233,7 +232,7 @@ class IndonesianDotPuzzle:
                 # solution path here
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
                 closedlist.append(node)
                 if counter % 10007 == 0:
                     print("Visited a thousand node: " + nodeToString(node, self.size))
