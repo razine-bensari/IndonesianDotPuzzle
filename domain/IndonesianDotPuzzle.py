@@ -16,11 +16,12 @@ class IndonesianDotPuzzle:
         self.maxnodenumber = self.numofchildren ** int(self.max_depth)
         self.puzzleArray = textwrap.wrap(self.textArray[3], int(self.size))
         self.puzzle = []
-        self.rootnode = Node(0, 0, 0, 0, self.puzzle)
 
         for i, lst in enumerate(self.puzzleArray):
             lst = [int(i) for i in lst]
             self.puzzle.append(lst)
+
+        self.rootnode = Node(0, 0, 0, 0, 0, self.puzzle)
 
     def touch(self, y, x, puzzlestate):
 
@@ -59,22 +60,34 @@ class IndonesianDotPuzzle:
     # Heuristic 1
     # Counts the number of ones in the puzzle state
     @staticmethod
-    def calculateHofN(nodeList):
-        for node in nodeList:
-            counter = 0
-            for i in node.puzzleState:
-                for j in node.puzzleState[i]:
-                    if node.puzzleState[i][j] == 1:
-                        counter += 1
-            node.hOfN = counter
+    def calculateHofN(puzzlestate):
+        hOfN = 0
+        for row in puzzlestate:
+            for j in row:
+                if j == 1:
+                    hOfN += 1
+        return hOfN
+
+    @staticmethod
+    def calculateEarliestWhiteDot(puzzlestate):
+        earliestWhiteDot = 0
+        for row in puzzlestate:
+            for j in row:
+                if j == 0:
+                    return earliestWhiteDot
+                else:
+                    earliestWhiteDot += earliestWhiteDot
+        return earliestWhiteDot
 
     def generatechildrenfrompuzzlestate(self, parentpuzzlestate, nodecounter):
         childrenlist = []
         puzzlestate = parentpuzzlestate
         for y in range(int(self.size)):
             for x in range(int(self.size)):
-                childrenlist.append(Node(int(nodecounter), 0, 0, 0, self.touch(y, x, puzzlestate)))
-                self.calculateHofN(childrenlist)
+                newPuzzleState = self.touch(y, x, puzzlestate)
+                hOfN = self.calculateHofN(newPuzzleState)
+                earliestWhiteDot = self.calculateEarliestWhiteDot(newPuzzleState)
+                childrenlist.append(Node(int(nodecounter), 0, hOfN, 0, earliestWhiteDot, newPuzzleState))
                 nodecounter += 1
         return childrenlist, nodecounter
 
@@ -138,15 +151,14 @@ class IndonesianDotPuzzle:
         # Used as search path (excludes goal node)
         closedlist = []
 
-        openlist.put((0, self.rootnode))
+        openlist.put(((0, 0), self.rootnode))
 
         goalstate = creategoalstate(self.size)
 
         counter = 1
         print("BFS. . . .")
         while openlist.qsize() != 0:
-            #node = getNextNodeFromQueue(openlist.queue, openlist.get()) TODO
-            node = openlist.get()
+            hn, node = openlist.get()
             if node.puzzlestate == goalstate:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
@@ -157,19 +169,22 @@ class IndonesianDotPuzzle:
             else:
                 children, counter = self.generatechildrenfrompuzzlestate(node.puzzlestate, counter)
                 closedlist.append(node)
-                for node in children:
-                    if isNodeInOpenOrClosedList(node, openlist.queue, closedlist):
-                        children.remove(node)
+                if counter % 10007 == 0:
+                    print("Visited a thousand node: " + nodeToString(node, self.size))
+                # for node in children:
+                #     if isNodeInOpenOrClosedList(node, openlist.queue, closedlist):
+                #         children.remove(node)
                 openlist = addChildrenToOpenList(children, openlist)
-        if len(closedlist) == self.max_length:
-            print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
-            stop = time.time()
-            print("time to run BFS: " + str((stop - start)))
-            return
+            if len(closedlist) >= self.max_length:
+                print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
+                stop = time.time()
+                print("time to run BFS: " + str((stop - start)))
+                return
         else:
             print("NO SOLUTION")
             stop = time.time()
             print("time to run BFS: " + str((stop - start)))
+            return
 
 
 def creategoalstate(size):
@@ -178,11 +193,24 @@ def creategoalstate(size):
 
 # This method returns the best not from the queue given a tie in HofN
 # Implementation based on what has been asked from the project handout
-# def getNextNodeFromQueue(openList, nodeFromGet):
+# def getNextNodeFromQueue(openListQueue, nodeFromGet):
 #     nodeToReturn = None
+#     sameNodeList = []
+#
+#     # Get all nodes with the same heuristic value
+#     while True:
+#         hofn, n = openListQueue.get()
+#         if nodeFromGet.hOfN != n.hOfN:
+#             openListQueue.put(((hofn, n.), n))
+#             break
+#         else:
+#             if nodeFromGet.hOfN == n.hOfN:
+#                 sameNodeList.append(n)
+#
+#     #loop through all the similar nodes and return the one with
+#     # the smallest earliestWhiteDot, put all other nodes back in the
 #     for node in openList:
-#         if node.hOfN = nodeFromGet.hOfN
-
+#         if node.hOfN == nodeFromGet.hOfN:
 
 
 
@@ -227,7 +255,7 @@ def createSolutionIndex(nodeindex, stack, size):
 
 def addChildrenToOpenList(children, openlist):
     for node in children:
-        openlist.put((node.hOfN, node))
+        openlist.put(((node.hOfN, node.earliestWhiteDot), node))
     return openlist
 
 
@@ -266,6 +294,7 @@ def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
         f.write(nodeToString(node, size))
     f.close()
 
+
 def getSolutionPath(nodeindex, listOfParentIndexes, tree, rootNode, size, testnumber):
     createSolutionIndex(int(nodeindex), listOfParentIndexes, size)
     outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
@@ -273,10 +302,15 @@ def getSolutionPath(nodeindex, listOfParentIndexes, tree, rootNode, size, testnu
 
 class Node:
 
-    def __init__(self, index, costvalue, heuristicvalue, pathcostvalue, puzzlestate):
+    def __init__(self, index, costvalue, heuristicvalue, pathcostvalue, earliestWhiteDot, puzzlestate):
         self.index = index
         self.puzzlestate = puzzlestate
         self.fOfN = pathcostvalue
         self.gOfN = costvalue
         self.hOfN = heuristicvalue
         self.isvisited = False
+        self.earliestWhiteDot = earliestWhiteDot
+
+    # https://github.com/laurentluce/python-algorithms/issues/6
+    def __lt__(self, other):
+        return self.hOfN < other.hOfN
