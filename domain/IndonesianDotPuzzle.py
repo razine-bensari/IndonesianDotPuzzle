@@ -190,7 +190,7 @@ class IndonesianDotPuzzle:
                 closedlist.append(node)
                 if counter % 10007 == 0:
                     print("Visited a thousand node: " + nodeToString(node, self.size))
-                openlist = addChildrenToOpenList(children, openlist)
+                openlist = addChildrenToOpenList(children, openlist, "BFS")
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
@@ -236,7 +236,7 @@ class IndonesianDotPuzzle:
                 closedlist.append(node)
                 if counter % 10007 == 0:
                     print("Visited a thousand node: " + nodeToString(node, self.size))
-                openlist = addChildrenToOpenList(children, openlist)
+                openlist = addChildrenToOpenList(children, openlist, "A*")
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
@@ -293,10 +293,15 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
 #             break
 
 
-def addChildrenToOpenList(children, openlist):
-    for node in children:
-        openlist.put(((node.hOfN, node.earliestWhiteDot), node))
-    return openlist
+def addChildrenToOpenList(children, openlist, str):
+    if str == "BFS":
+        for node in children:
+            openlist.put(((node.hOfN, node.earliestWhiteDot), node))
+        return openlist
+    else:
+        for node in children:
+            openlist.put(((node.fOfN, node.earliestWhiteDot), node))
+        return openlist
 
 
 def printTree(tree):
