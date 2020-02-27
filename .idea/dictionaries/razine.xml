@@ -28,6 +28,7 @@
       <w>pathcostvalue</w>
       <w>puzzlestate</w>
       <w>rootnode</w>
+      <w>solutionlist</w>
       <w>statestring</w>
       <w>tempstate</w>
       <w>testnumber</w>

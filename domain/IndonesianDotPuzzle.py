@@ -20,7 +20,7 @@ class IndonesianDotPuzzle:
             lst = [int(i) for i in lst]
             self.puzzle.append(lst)
 
-        self.rootnode = Node(0, 0, 0, 0, 0, 0, None, self.puzzle, "N/A")
+        self.rootnode = Node(0, 0, 0, 0, 0, 0, None, self.puzzle, "0")
 
     def touch(self, y, x, puzzlestate):
 
@@ -138,7 +138,7 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run DFS: " + str((stop - start)))
-                # No need for solution path for dfs because we already demoed the code
+                outputSolutionPath(node, self.size)
                 return
             else:
                 children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
@@ -165,6 +165,7 @@ class IndonesianDotPuzzle:
             print("the max length cannot be 0. Otherwise, BFS will take a long time to compute")
             stop = time.time()
             print("time to run BFS: " + str((stop - start)))
+            # print solution path to terminal
             return
 
         # Used as Priority Queue
@@ -185,7 +186,7 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run BFS: " + str((stop - start)))
-                # solution path here
+                outputSolutionPath(node, self.size)
                 return
             else:
                 children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
@@ -211,6 +212,7 @@ class IndonesianDotPuzzle:
             print("the max length cannot be 0. Otherwise, A* will take a long time to compute")
             stop = time.time()
             print("time to run A*: " + str((stop - start)))
+            # print solution path to terminal
             return
 
         # Used as Priority Queue
@@ -231,7 +233,7 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run A*: " + str((stop - start)))
-                # solution path here
+                outputSolutionPath(node, self.size)
                 return
             else:
                 children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
@@ -251,8 +253,26 @@ class IndonesianDotPuzzle:
             return
 
 
+def outputSolutionPath(finalNode, size):
+    currentNode = finalNode
+    solutionlist = []
+
+    while currentNode is not None:
+        solutionlist.append(currentNode)
+        currentNode = currentNode.parentNode
+
+    # in place reverse
+    solutionlist.reverse()
+
+    print("\n\nSolution path: ")
+    for node in solutionlist:
+        statestring = puzzleStateToString(node.puzzlestate, size)
+        print(node.coord + " " + statestring, end='')
+
+
 def getTouchedCoordinate(y, x):
     return str(y) + str(x)
+
 
 def creategoalstate(size):
     goalstate = [[0] * size for _ in range(size)]
@@ -263,6 +283,7 @@ def nodeToString(node, size):
     linetoprint = str(node.fOfN) + " " + str(node.gOfN) + " " + str(node.hOfN) + " " + puzzleStateToString(
         node.puzzlestate, size)
     return linetoprint
+
 
 def puzzleStateToString(puzzlestate, size):
     statestring = ""
@@ -319,13 +340,13 @@ def printTree(tree):
 
 class Node:
 
-    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, parentNode, puzzlestate, coord):
+    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, parentNode,
+                 puzzlestate, coord):
         self.index = index
         self.puzzlestate = puzzlestate
         self.fOfN = functionCostvalue
         self.gOfN = costvalue
         self.hOfN = heuristicvalue
-        self.isvisited = False
         self.earliestWhiteDot = earliestWhiteDot
         self.depthLevel = depthLevel
         self.parentNode = parentNode
