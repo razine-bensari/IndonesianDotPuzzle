@@ -21,7 +21,7 @@ class IndonesianDotPuzzle:
             lst = [int(i) for i in lst]
             self.puzzle.append(lst)
 
-        self.rootnode = Node(0, 0, 0, 0, 0, 0, self.puzzle)
+        self.rootnode = Node(0, 0, 0, 0, 0, 0, None, self.puzzle)
 
     def touch(self, y, x, puzzlestate):
 
@@ -108,6 +108,7 @@ class IndonesianDotPuzzle:
                                          fOfN,
                                          earliestWhiteDot,
                                          depthLevel,
+                                         node,
                                          newPuzzleState))
                 nodecounter += 1
         return childrenlist, nodecounter
@@ -313,43 +314,9 @@ def printTree(tree):
             print(key, " : ", node.index)
 
 
-# def outputSolutionPath(listOfParentIndexes, tree, root, size, testnumber):
-#     listOfNodes = []
-#     for index in listOfParentIndexes:
-#         for key, nodelist in tree.items():
-#             for i, node in enumerate(nodelist):
-#                 if index == node.index:
-#                     listOfNodes.append(node)
-#     if testnumber == 1:
-#         f = open("1_dfs_solution.txt", "w")
-#     if testnumber == 0:
-#         f = open("0_dfs_solution.txt", "w")
-#     if testnumber == 2:
-#         f = open("2_dfs_solution.txt", "w")
-#     if testnumber == 3:
-#         f = open("3_dfs_solution.txt", "w")
-#     if testnumber == 4:
-#         f = open("4_dfs_solution.txt", "w")
-#     if testnumber == 5:
-#         f = open("5_dfs_solution.txt", "w")
-#     if testnumber != 1 and testnumber != 0 and testnumber != 2 and testnumber != 3 and testnumber != 4 and testnumber != 5:
-#         print("Invalid test number")
-#         return
-#     listOfNodes.append(root)
-#     listOfNodes.reverse()
-#     for node in listOfNodes:
-#         f.write(nodeToString(node, size))
-#     f.close()
-#
-#
-# def getSolutionPath(nodeindex, listOfParentIndexes, tree, rootNode, size, testnumber):
-#     createSolutionIndex(int(nodeindex), listOfParentIndexes, size)
-#     outputSolutionPath(listOfParentIndexes, tree, rootNode, size, testnumber)
-
-
 class Node:
 
-    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, puzzlestate):
+    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, parentNode,puzzlestate):
         self.index = index
         self.puzzlestate = puzzlestate
         self.fOfN = functionCostvalue
@@ -358,6 +325,7 @@ class Node:
         self.isvisited = False
         self.earliestWhiteDot = earliestWhiteDot
         self.depthLevel = depthLevel
+        self.parentNode = parentNode
 
     # https://github.com/laurentluce/python-algorithms/issues/6
     def __lt__(self, other):
