@@ -1,5 +1,4 @@
 import copy
-from collections import defaultdict
 import textwrap
 from queue import PriorityQueue
 import time
@@ -21,7 +20,7 @@ class IndonesianDotPuzzle:
             lst = [int(i) for i in lst]
             self.puzzle.append(lst)
 
-        self.rootnode = Node(0, 0, 0, 0, 0, 0, None, self.puzzle)
+        self.rootnode = Node(0, 0, 0, 0, 0, 0, None, self.puzzle, "N/A")
 
     def touch(self, y, x, puzzlestate):
 
@@ -101,6 +100,7 @@ class IndonesianDotPuzzle:
                 hOfN = self.calculateHofN_one(newPuzzleState)
                 gOfN = self.calculateGofN(node)
                 fOfN = self.calculateFofN(node)
+                coord = getTouchedCoordinate(x, y)
                 earliestWhiteDot = self.calculateEarliestWhiteDot(newPuzzleState)
                 childrenlist.append(Node(int(nodecounter),
                                          gOfN,
@@ -109,7 +109,8 @@ class IndonesianDotPuzzle:
                                          earliestWhiteDot,
                                          depthLevel,
                                          node,
-                                         newPuzzleState))
+                                         newPuzzleState,
+                                         coord))
                 nodecounter += 1
         return childrenlist, nodecounter
 
@@ -250,6 +251,9 @@ class IndonesianDotPuzzle:
             return
 
 
+def getTouchedCoordinate(y, x):
+    return str(y) + str(x)
+
 def creategoalstate(size):
     goalstate = [[0] * size for _ in range(size)]
     return goalstate
@@ -259,7 +263,6 @@ def nodeToString(node, size):
     linetoprint = str(node.fOfN) + " " + str(node.gOfN) + " " + str(node.hOfN) + " " + puzzleStateToString(
         node.puzzlestate, size)
     return linetoprint
-
 
 def puzzleStateToString(puzzlestate, size):
     statestring = ""
@@ -316,7 +319,7 @@ def printTree(tree):
 
 class Node:
 
-    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, parentNode,puzzlestate):
+    def __init__(self, index, costvalue, heuristicvalue, functionCostvalue, earliestWhiteDot, depthLevel, parentNode, puzzlestate, coord):
         self.index = index
         self.puzzlestate = puzzlestate
         self.fOfN = functionCostvalue
@@ -326,6 +329,7 @@ class Node:
         self.earliestWhiteDot = earliestWhiteDot
         self.depthLevel = depthLevel
         self.parentNode = parentNode
+        self.coord = coord
 
     # https://github.com/laurentluce/python-algorithms/issues/6
     def __lt__(self, other):
