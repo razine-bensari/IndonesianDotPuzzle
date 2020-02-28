@@ -129,9 +129,15 @@ class IndonesianDotPuzzle:
         else:
             return False
 
+    def isThereALoop(self, puzzlestate, node):
+        if node.parentNode is None:
+            return False
+        if puzzleStateToString(puzzlestate, self.size) == puzzleStateToString(node.parentNode.puzzlestate, self.size):
+            return True
+
     # Heuristic 2
     # Associate a heuristic value based on the current shape of the puzzle
-    def calculateHofH_two(self, puzzlestate):
+    def calculateHofH_two(self, puzzlestate, node):
         # Get Number of 1s
         numOfOnes = self.getNumOfOnes(puzzlestate)
 
@@ -143,12 +149,16 @@ class IndonesianDotPuzzle:
             hOfN = 1
         elif numOfOnes == 0:
             hOfN = 0
+        elif self.isThereALoop(puzzlestate, node):
+            hOfN = 100000
         else:
+            # check for loop (heavy computation <0.0>)
             hOfN = (self.size * self.size - numOfOnes) + 1
         return hOfN
 
+
     def calculateGofN(self, node):
-        return node.depthLevel + 5
+        return node.depthLevel
 
     def calculateFofN(self, costValue, heuristicValue):
         return costValue + heuristicValue
@@ -168,7 +178,7 @@ class IndonesianDotPuzzle:
         for y in range(int(self.size)):
             for x in range(int(self.size)):
                 newPuzzleState = self.touch(y, x, node.puzzlestate)
-                hOfN = self.calculateHofH_two(newPuzzleState)
+                hOfN = self.calculateHofH_two(newPuzzleState, node)
                 gOfN = self.calculateGofN(node)
                 fOfN = self.calculateFofN(gOfN, hOfN)
                 coord = getTouchedCoordinate(y, x)
