@@ -62,7 +62,7 @@ from StateSpaceSearchAlgorithm.DFS import *
 # DFS(puzzle0.tree, puzzle0.max_depth, puzzle0.size, puzzle0.rootnode, puzzle0.maxnodenumber, 5)
 # print("\n- - - - - - - - END OF PUZZLE 5 SEARCH - - - - - - - -\n")
 
-#puzzle = IndonesianDotPuzzle("3 4 20000 010111010")
+
 puzzle = IndonesianDotPuzzle("3 10 100000 111111111")
 puzzle.BFS()
 
@@ -70,11 +70,15 @@ puzzle = IndonesianDotPuzzle("3 4 2000 110110111")
 puzzle.BFS()
 
 puzzle = IndonesianDotPuzzle("3 100 2000 011001100")
+puzzle.BFS()
+
+
+
+puzzle = IndonesianDotPuzzle("3 100 2000 011001100")
 puzzle.A_star()
 
 puzzle = IndonesianDotPuzzle("3 4 2000 110110111")
 puzzle.A_star()
-
 
 puzzle = IndonesianDotPuzzle("10 2 20000 0000000000000000000000000000000000000000000100000000111000000001000000000000000000000000000000000000")
 puzzle.A_star()
