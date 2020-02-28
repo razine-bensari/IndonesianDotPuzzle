@@ -17,6 +17,7 @@
       <w>heuristicvalue</w>
       <w>isvisited</w>
       <w>linetoprint</w>
+      <w>lshape</w>
       <w>maxnodenumber</w>
       <w>nodecounter</w>
       <w>nodeindex</w>
@@ -33,6 +34,7 @@
       <w>tempstate</w>
       <w>testnumber</w>
       <w>textline</w>
+      <w>tshape</w>
     </words>
   </dictionary>
 </component>

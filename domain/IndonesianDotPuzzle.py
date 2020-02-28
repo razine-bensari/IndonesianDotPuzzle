@@ -52,14 +52,22 @@ class IndonesianDotPuzzle:
 
         return temp
 
-    @staticmethod
-    def switch(val):
+    def switch(self, val):
         return 1 - int(val)
+
+    def getNumOfOnes(self, node):
+        # Get Number of 1s
+        numOfOnes = 0
+        value = 0
+        for row in node.puzzlestate:
+            for v in row:
+                if v == 1:
+                    numOfOnes += numOfOnes
+        return numOfOnes
 
     # Heuristic 1
     # Counts the number of ones in the puzzle state
-    @staticmethod
-    def calculateHofN_one(puzzlestate):
+    def calculateHofN_one(self, puzzlestate):
         hOfN = 0
         for row in puzzlestate:
             for j in row:
@@ -67,22 +75,76 @@ class IndonesianDotPuzzle:
                     hOfN += 1
         return hOfN
 
+    def isCrossState(self, node):
+        for i, row in enumerate(node.puzzlestate):
+            for j, v in enumerate(row):
+                if v == 1 and i != 0 and i != self.size - 1 and j != 0 and j != self.size - 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i+1][j-1]:
+                    return True
+        else:
+            return False
+
+    def isTshape(self, node):
+        for i, row in enumerate(node.puzzlestate):
+            for j, v in enumerate(row):
+                if v == 1:
+                    # T shape is in top row
+                    if i == 0 and j != 0 and j != self.size - 1 and node.puzzlestate[i+1][j] == 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i][j+1] == 1:
+                        return True
+                    # T shape is in bottom row
+                    elif i == self.size - 1 and j != 0 and j != self.size - 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i][j+1] == 1:
+                        return True
+                    # T shape is in left side
+                    elif j == 0 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1:
+                        return True
+                    # T shape is in the right
+                    elif j == self.size - 1 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1:
+                        return True
+        else:
+            return False
+
+    def isLshape(self, node):
+        for i, row in enumerate(node.puzzlestate):
+            for j, v in enumerate(row):
+                if v == 1:
+                    # Top left corner
+                    if i == 0 and j == 0 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i+1][j] == 1:
+                        return True
+                    # Top right corner
+                    elif i == 0 and j == self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i+1][j] == 1:
+                        return True
+                    # bottom left corner
+                    elif i == self.size - 1 and j == 0 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i][j+1] == 1:
+                        return True
+                    # bottom right corner
+                    elif i == self.size - 1 and j == self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i-1][j] == 1:
+                        return True
+        else:
+            return False
+
+
+
     # Heuristic 2
     # Associate a heuristic value based on the current shape of the puzzle
-    @staticmethod
-    def calculateHofH_two(node):
-        return None
+    def calculateHofH_two(self, node):
+        # Get Number of 1s
+        numOfOnes = self.getNumOfOnes(node)
 
-    @staticmethod
-    def calculateGofN(node):
+        if numOfOnes == 5 and self.isCrossState(node):
+            node.hOfN = 1
+        elif numOfOnes == 3 and self.isLshape(node):
+            node.hOfN = 1
+        elif numOfOnes == 4 and self.isTshape(node):
+            node.hOfN = 1
+        else:
+            node.hOfN = (self.size * self.size) - numOfOnes
+
+    def calculateGofN(self, node):
         return node.depthLevel
 
-    @staticmethod
-    def calculateFofN(node):
+    def calculateFofN(self, node):
         return node.gOfN + node.hOfN
 
-    @staticmethod
-    def calculateEarliestWhiteDot(puzzlestate):
+    def calculateEarliestWhiteDot(self, puzzlestate):
         earliestWhiteDot = 0
         for row in puzzlestate:
             for j in row:
@@ -302,20 +364,6 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
         if n.index == node.index:
             return True
     return False
-
-
-# def createSolutionIndex(nodeindex, stack, size):
-#     if nodeindex == 0:
-#         stack.append(nodeindex)
-#         return
-#     stack.append(nodeindex)
-#     for x in range(nodeindex):
-#         ceilingvalue = ((x * size * size) + 1)
-#         floorvalue = ((x * size * size) + (size * size) + 1)
-#         if ceilingvalue <= nodeindex <= floorvalue:
-#             parentindex = x
-#             createSolutionIndex(parentindex, stack, size)
-#             break
 
 
 def addChildrenToOpenList(children, openlist, distinguisher):
