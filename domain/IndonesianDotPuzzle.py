@@ -78,7 +78,9 @@ class IndonesianDotPuzzle:
     def isCrossState(self, node):
         for i, row in enumerate(node.puzzlestate):
             for j, v in enumerate(row):
-                if v == 1 and i != 0 and i != self.size - 1 and j != 0 and j != self.size - 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i+1][j-1]:
+                if v == 1 and i != 0 and i != self.size - 1 and j != 0 and j != self.size - 1 and \
+                        node.puzzlestate[i - 1][j] == 1 and node.puzzlestate[i + 1][j] == 1 and node.puzzlestate[i][
+                    j + 1] == 1 and node.puzzlestate[i + 1][j - 1]:
                     return True
         else:
             return False
@@ -88,16 +90,20 @@ class IndonesianDotPuzzle:
             for j, v in enumerate(row):
                 if v == 1:
                     # T shape is in top row
-                    if i == 0 and j != 0 and j != self.size - 1 and node.puzzlestate[i+1][j] == 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i][j+1] == 1:
+                    if i == 0 and j != 0 and j != self.size - 1 and node.puzzlestate[i + 1][j] == 1 and \
+                            node.puzzlestate[i][j - 1] == 1 and node.puzzlestate[i][j + 1] == 1:
                         return True
                     # T shape is in bottom row
-                    elif i == self.size - 1 and j != 0 and j != self.size - 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i][j+1] == 1:
+                    elif i == self.size - 1 and j != 0 and j != self.size - 1 and node.puzzlestate[i - 1][j] == 1 and \
+                            node.puzzlestate[i][j - 1] == 1 and node.puzzlestate[i][j + 1] == 1:
                         return True
                     # T shape is in left side
-                    elif j == 0 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1:
+                    elif j == 0 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j + 1] == 1 and \
+                            node.puzzlestate[i - 1][j] == 1 and node.puzzlestate[i + 1][j] == 1:
                         return True
                     # T shape is in the right
-                    elif j == self.size - 1 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i+1][j] == 1:
+                    elif j == self.size - 1 and i != 0 and i != self.size - 1 and node.puzzlestate[i][j - 1] == 1 and \
+                            node.puzzlestate[i - 1][j] == 1 and node.puzzlestate[i + 1][j] == 1:
                         return True
         else:
             return False
@@ -107,21 +113,22 @@ class IndonesianDotPuzzle:
             for j, v in enumerate(row):
                 if v == 1:
                     # Top left corner
-                    if i == 0 and j == 0 and node.puzzlestate[i][j+1] == 1 and node.puzzlestate[i+1][j] == 1:
+                    if i == 0 and j == 0 and node.puzzlestate[i][j + 1] == 1 and node.puzzlestate[i + 1][j] == 1:
                         return True
                     # Top right corner
-                    elif i == 0 and j == self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i+1][j] == 1:
+                    elif i == 0 and j == self.size - 1 and node.puzzlestate[i][j - 1] == 1 and node.puzzlestate[i + 1][
+                        j] == 1:
                         return True
                     # bottom left corner
-                    elif i == self.size - 1 and j == 0 and node.puzzlestate[i-1][j] == 1 and node.puzzlestate[i][j+1] == 1:
+                    elif i == self.size - 1 and j == 0 and node.puzzlestate[i - 1][j] == 1 and node.puzzlestate[i][
+                        j + 1] == 1:
                         return True
                     # bottom right corner
-                    elif i == self.size - 1 and j == self.size - 1 and node.puzzlestate[i][j-1] == 1 and node.puzzlestate[i-1][j] == 1:
+                    elif i == self.size - 1 and j == self.size - 1 and node.puzzlestate[i][j - 1] == 1 and \
+                            node.puzzlestate[i - 1][j] == 1:
                         return True
         else:
             return False
-
-
 
     # Heuristic 2
     # Associate a heuristic value based on the current shape of the puzzle
@@ -129,14 +136,17 @@ class IndonesianDotPuzzle:
         # Get Number of 1s
         numOfOnes = self.getNumOfOnes(node)
 
+        hOfN = 0
+
         if numOfOnes == 5 and self.isCrossState(node):
-            node.hOfN = 1
+            hOfN = 1
         elif numOfOnes == 3 and self.isLshape(node):
-            node.hOfN = 1
+            hOfN = 1
         elif numOfOnes == 4 and self.isTshape(node):
-            node.hOfN = 1
+            hOfN = 1
         else:
-            node.hOfN = (self.size * self.size) - numOfOnes
+            hOfN = (self.size * self.size) - numOfOnes
+        return hOfN
 
     def calculateGofN(self, node):
         return node.depthLevel
@@ -159,7 +169,7 @@ class IndonesianDotPuzzle:
         for y in range(int(self.size)):
             for x in range(int(self.size)):
                 newPuzzleState = self.touch(y, x, node.puzzlestate)
-                hOfN = self.calculateHofN_one(newPuzzleState)
+                hOfN = self.calculateHofH_two(node)
                 gOfN = self.calculateGofN(node)
                 fOfN = self.calculateFofN(node)
                 coord = getTouchedCoordinate(x, y)
