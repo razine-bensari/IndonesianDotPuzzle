@@ -63,7 +63,7 @@ from StateSpaceSearchAlgorithm.DFS import *
 # print("\n- - - - - - - - END OF PUZZLE 5 SEARCH - - - - - - - -\n")
 
 # puzzle = IndonesianDotPuzzle("3 4 20000 010111010")
-puzzle = IndonesianDotPuzzle("3 100 2000 000001011")
+puzzle = IndonesianDotPuzzle("3 4 200000 110110111")
 puzzle.BFS()
 
 
