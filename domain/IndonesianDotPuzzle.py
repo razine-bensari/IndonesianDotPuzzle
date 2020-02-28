@@ -62,7 +62,7 @@ class IndonesianDotPuzzle:
         for row in puzzlestate:
             for v in row:
                 if v == 1:
-                    numOfOnes += numOfOnes
+                    numOfOnes += 1
         return numOfOnes
 
     # Heuristic 1
@@ -141,12 +141,14 @@ class IndonesianDotPuzzle:
             hOfN = 1
         elif numOfOnes == 4 and self.isTshape(puzzlestate):
             hOfN = 1
+        elif numOfOnes == 0:
+            hOfN = 0
         else:
-            hOfN = (self.size * self.size) - numOfOnes
+            hOfN = (self.size * self.size - numOfOnes) + 1
         return hOfN
 
     def calculateGofN(self, node):
-        return node.depthLevel
+        return node.depthLevel + 5
 
     def calculateFofN(self, costValue, heuristicValue):
         return costValue + heuristicValue
@@ -261,7 +263,7 @@ class IndonesianDotPuzzle:
                 children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
                 closedlist.append(node)
                 if counter % 10007 == 0:
-                    print("Visited a thousand node: " + nodeToString(node, self.size))
+                    print("Visited a 10007 node: " + nodeToString(node, self.size))
                 openlist = addChildrenToOpenList(children, openlist, "BFS")
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
