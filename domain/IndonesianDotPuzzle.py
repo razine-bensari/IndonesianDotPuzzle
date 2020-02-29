@@ -2,6 +2,7 @@ import copy
 import textwrap
 from queue import PriorityQueue
 import time
+import string
 
 
 class IndonesianDotPuzzle:
@@ -335,6 +336,7 @@ class IndonesianDotPuzzle:
 
 
 def outputSolutionPath(finalNode, size):
+    mapLetter = dict(zip(range(1, 27), string.ascii_lowercase))
     currentNode = finalNode
     solutionlist = []
 
@@ -348,7 +350,17 @@ def outputSolutionPath(finalNode, size):
     print("\n\nSolution path: ")
     for node in solutionlist:
         statestring = puzzleStateToString(node.puzzlestate, size)
-        print(node.coord + " " + statestring, end='')
+        coordinate = getCartesianCoordinate(mapLetter, node.coord)
+        print(coordinate + "    " + statestring, end='')
+
+
+def getCartesianCoordinate(dic, coord):
+    if len(coord) == 1:
+        return "0 "
+    else:
+        c1 = int(coord[0])
+        c2 = int(coord[1])
+        return str(dic.get(c1 + 1)).capitalize() + str(c2 + 1)
 
 
 def getTouchedCoordinate(y, x):
