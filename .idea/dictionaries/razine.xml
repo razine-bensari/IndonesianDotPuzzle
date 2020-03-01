@@ -28,10 +28,12 @@
       <w>parentpuzzlestate</w>
       <w>pathcostvalue</w>
       <w>puzzlestate</w>
+      <w>puzzlestring</w>
       <w>rootnode</w>
       <w>solutionlist</w>
       <w>statestring</w>
       <w>tempstate</w>
+      <w>testfilename</w>
       <w>testnumber</w>
       <w>textline</w>
       <w>tshape</w>

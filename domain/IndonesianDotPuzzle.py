@@ -7,7 +7,8 @@ import string
 
 class IndonesianDotPuzzle:
 
-    def __init__(self, textline):
+    def __init__(self, textline, puzzleNumber):
+        self.puzzleNumber = puzzleNumber
         self.textArray = textline.split()
         self.size = int(self.textArray[0])
         self.max_depth = int(self.textArray[1])
@@ -154,12 +155,11 @@ class IndonesianDotPuzzle:
             hOfN = 100000
         else:
             # check for loop (heavy computation <0.0>)
-            hOfN = (self.size * self.size - numOfOnes) + 1
+            hOfN = numOfOnes + 1
         return hOfN
 
-
     def calculateGofN(self, node):
-        return node.depthLevel
+        return node.depthLevel + self.size/3
 
     def calculateFofN(self, costValue, heuristicValue):
         return costValue + heuristicValue
@@ -174,34 +174,84 @@ class IndonesianDotPuzzle:
                     earliestWhiteDot += earliestWhiteDot
         return earliestWhiteDot
 
-    def generatechildrenfrompuzzlestate(self, node, nodecounter, depthLevel):
-        childrenlist = []
-        for y in range(int(self.size)):
-            for x in range(int(self.size)):
-                newPuzzleState = self.touch(y, x, node.puzzlestate)
-                hOfN = self.calculateHofH_two(newPuzzleState, node)
-                gOfN = self.calculateGofN(node)
-                fOfN = self.calculateFofN(gOfN, hOfN)
-                coord = getTouchedCoordinate(y, x)
-                earliestWhiteDot = self.calculateEarliestWhiteDot(newPuzzleState)
-                childrenlist.append(Node(int(nodecounter),
-                                         gOfN,
-                                         hOfN,
-                                         fOfN,
-                                         earliestWhiteDot,
-                                         depthLevel,
-                                         node,
-                                         newPuzzleState,
-                                         coord))
-                nodecounter += 1
-        return childrenlist, nodecounter
+    def generatechildrenfrompuzzlestate(self, node, nodecounter, depthLevel, typeOfSearch):
+        if typeOfSearch == "DFS":
+            childrenlist = []
+            for y in range(int(self.size)):
+                for x in range(int(self.size)):
+                    newPuzzleState = self.touch(y, x, node.puzzlestate)
+                    hOfN = 0
+                    gOfN = 0
+                    fOfN = 0
+                    coord = 0
+                    earliestWhiteDot = 0
+                    childrenlist.append(Node(int(nodecounter),
+                                             gOfN,
+                                             hOfN,
+                                             fOfN,
+                                             earliestWhiteDot,
+                                             depthLevel,
+                                             node,
+                                             newPuzzleState,
+                                             coord))
+                    nodecounter += 1
+            return childrenlist, nodecounter
+        elif typeOfSearch == "BFS":
+            childrenlist = []
+            for y in range(int(self.size)):
+                for x in range(int(self.size)):
+                    newPuzzleState = self.touch(y, x, node.puzzlestate)
+                    hOfN = self.calculateHofH_two(newPuzzleState, node)
+                    gOfN = 0
+                    fOfN = 0
+                    coord = getTouchedCoordinate(y, x)
+                    earliestWhiteDot = self.calculateEarliestWhiteDot(newPuzzleState)
+                    childrenlist.append(Node(int(nodecounter),
+                                             gOfN,
+                                             hOfN,
+                                             fOfN,
+                                             earliestWhiteDot,
+                                             depthLevel,
+                                             node,
+                                             newPuzzleState,
+                                             coord))
+                    nodecounter += 1
+            return childrenlist, nodecounter
+        else:
+            childrenlist = []
+            for y in range(int(self.size)):
+                for x in range(int(self.size)):
+                    newPuzzleState = self.touch(y, x, node.puzzlestate)
+                    hOfN = self.calculateHofH_two(newPuzzleState, node)
+                    gOfN = self.calculateGofN(node)
+                    fOfN = self.calculateFofN(gOfN, hOfN)
+                    coord = getTouchedCoordinate(y, x)
+                    earliestWhiteDot = self.calculateEarliestWhiteDot(newPuzzleState)
+                    childrenlist.append(Node(int(nodecounter),
+                                             gOfN,
+                                             hOfN,
+                                             fOfN,
+                                             earliestWhiteDot,
+                                             depthLevel,
+                                             node,
+                                             newPuzzleState,
+                                             coord))
+                    nodecounter += 1
+            return childrenlist, nodecounter
 
     def DFS(self):
+        fileNameSearch = str(self.puzzleNumber) + "_dfs_search.txt"
+        fileNameSolution = str(self.puzzleNumber) + "_dfs_solution.txt"
+        fSearch = open(fileNameSearch, "w")
+        fSol = open(fileNameSolution, "w")
         start = time.time()
+
         if self.max_depth == 0:
             print("the max depth cannot be 0. Otherwise, DFS will take a long time to compute")
             stop = time.time()
             print("time to run DFS: " + str((stop - start)))
+            fSearch.close()
+            fSol.close()
             return
 
         # Used as Stack
@@ -220,34 +270,49 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run DFS: " + str((stop - start)))
-                outputSolutionPath(node, self.size)
+                outputSolutionPath(node, self.size, fSol)
+                fSol.close()
+                fSearch.close()
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1, "DFS")
+                fSearch.write(nodeToString(node, self.size))
                 closedlist.append(node)
                 for node in children:
                     if isNodeInOpenOrClosedList(node, openlist, closedlist):
                         children.remove(node)
-                openlist = addChildrenToOpenList(children, openlist, "DFS")
+                addChildrenToOpenList(children, openlist, "DFS")
             counter += 1
-        if self.maxnodenumber == counter:
-            print("No solution within cutoff. Maximum number of nodes for given depth is: " + str(self.maxnodenumber))
-            stop = time.time()
-            print("time to run DFS: " + str((stop - start)))
-            return
+            if self.maxnodenumber == counter:
+                print("No solution within cutoff. Maximum number of nodes for given depth is: " + str(self.maxnodenumber))
+                stop = time.time()
+                print("time to run DFS: " + str((stop - start)))
+                fSol.write("no solution")
+                fSearch.close()
+                fSol.close()
+                return
         else:
             print("NO SOLUTION")
             stop = time.time()
             print("time to run DFS: " + str((stop - start)))
+            fSol.write("no solution")
+            fSol.close()
+            fSearch.close()
+            return
 
     def BFS(self):
+        fileNameSearch = str(self.puzzleNumber) + "_bfs_search.txt"
+        fileNameSolution = str(self.puzzleNumber) + "_bfs_solution.txt"
+        fSearch = open(fileNameSearch, "w")
+        fSol = open(fileNameSolution, "w")
         start = time.time()
 
         if self.max_length == 0:
             print("the max length cannot be 0. Otherwise, BFS will take a long time to compute")
             stop = time.time()
             print("time to run BFS: " + str((stop - start)))
-            # print solution path to terminal
+            fSearch.close()
+            fSol.close()
             return
 
         # Used as Priority Queue
@@ -268,33 +333,45 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run BFS: " + str((stop - start)))
-                outputSolutionPath(node, self.size)
+                outputSolutionPath(node, self.size, fSol)
+                fSol.close()
+                fSearch.close()
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1, "BFS")
+                fSearch.write(nodeToString(node, self.size))
                 closedlist.append(node)
-                if counter % 10007 == 0:
-                    print("Visited a 10007 node: " + nodeToString(node, self.size))
                 openlist = addChildrenToOpenList(children, openlist, "BFS")
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
                 print("time to run BFS: " + str((stop - start)))
+                fSol.write("no solution")
+                fSearch.close()
+                fSol.close()
                 return
         else:
             print("NO SOLUTION")
             stop = time.time()
             print("time to run BFS: " + str((stop - start)))
+            fSol.write("no solution")
+            fSol.close()
+            fSearch.close()
             return
 
     def A_star(self):
+        fileNameSearch = str(self.puzzleNumber) + "_astar_search.txt"
+        fileNameSolution = str(self.puzzleNumber) + "_astar_solution.txt"
+        fSearch = open(fileNameSearch, "w")
+        fSol = open(fileNameSolution, "w")
         start = time.time()
 
         if self.max_length == 0:
             print("the max length cannot be 0. Otherwise, A* will take a long time to compute")
             stop = time.time()
             print("time to run A*: " + str((stop - start)))
-            # print solution path to terminal
+            fSearch.close()
+            fSol.close()
             return
 
         # Used as Priority Queue
@@ -315,27 +392,34 @@ class IndonesianDotPuzzle:
                 print("SUCCESS!! the node index is: " + str(node.index))
                 stop = time.time()
                 print("time to run A*: " + str((stop - start)))
-                outputSolutionPath(node, self.size)
+                outputSolutionPath(node, self.size, fSol)
+                fSol.close()
+                fSearch.close()
                 return
             else:
-                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1)
+                children, counter = self.generatechildrenfrompuzzlestate(node, counter, node.depthLevel + 1, "A*")
+                fSearch.write(nodeToString(node, self.size))
                 closedlist.append(node)
-                if counter % 10007 == 0:
-                    print("Visited a thousand node: " + nodeToString(node, self.size))
                 openlist = addChildrenToOpenList(children, openlist, "A*")
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
                 print("time to run A*: " + str((stop - start)))
+                fSol.write("no solution")
+                fSearch.close()
+                fSol.close()
                 return
         else:
             print("NO SOLUTION")
             stop = time.time()
             print("time to run A*: " + str((stop - start)))
+            fSol.write("no solution")
+            fSearch.close()
+            fSol.close()
             return
 
 
-def outputSolutionPath(finalNode, size):
+def outputSolutionPath(finalNode, size, fSol):
     mapLetter = dict(zip(range(1, 27), string.ascii_lowercase))
     currentNode = finalNode
     solutionlist = []
@@ -352,6 +436,7 @@ def outputSolutionPath(finalNode, size):
         statestring = puzzleStateToString(node.puzzlestate, size)
         coordinate = getCartesianCoordinate(mapLetter, node.coord)
         print(coordinate + "    " + statestring, end='')
+        fSol.write(coordinate + "    " + statestring)
 
 
 def getCartesianCoordinate(dic, coord):
@@ -373,9 +458,9 @@ def creategoalstate(size):
 
 
 def nodeToString(node, size):
-    linetoprint = str(node.fOfN) + " " + str(node.gOfN) + " " + str(node.hOfN) + " " + puzzleStateToString(
-        node.puzzlestate, size)
-    return linetoprint
+        linetoprint = str(node.fOfN) + " " + str(node.gOfN) + " " + str(node.hOfN) + " " + puzzleStateToString(
+            node.puzzlestate, size)
+        return linetoprint
 
 
 def puzzleStateToString(puzzlestate, size):
@@ -397,17 +482,17 @@ def isNodeInOpenOrClosedList(node, openlist, closedlist):
     return False
 
 
-def addChildrenToOpenList(children, openlist, distinguisher):
-    if distinguisher == "BFS":
+def addChildrenToOpenList(children, openlist, typeOfSearch):
+    if typeOfSearch == "BFS":
         for node in children:
             openlist.put(((node.hOfN, node.earliestWhiteDot), node))
         return openlist
-    elif distinguisher == "A*":
+    elif typeOfSearch == "A*":
         for node in children:
             openlist.put(((node.fOfN, node.earliestWhiteDot), node))
         return openlist
-    elif distinguisher == "DFS":
-        return openlist.extend(children)
+    elif typeOfSearch == "DFS":
+        openlist.extend(children)
 
 
 def printTree(tree):
