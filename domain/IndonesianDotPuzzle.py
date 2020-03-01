@@ -334,6 +334,8 @@ class IndonesianDotPuzzle:
                 stop = time.time()
                 print("time to run BFS: " + str((stop - start)))
                 outputSolutionPath(node, self.size, fSol)
+                print("Number of nodes in openlist: " + str(len(openlist.queue)))
+                print("Number of nodes in closedlist: " + str(len(closedlist)))
                 fSol.close()
                 fSearch.close()
                 return
@@ -345,6 +347,8 @@ class IndonesianDotPuzzle:
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
+                print("Number of nodes in openlist: " + str(len(openlist.queue)))
+                print("Number of nodes in closedlist: " + str(len(closedlist)))
                 print("time to run BFS: " + str((stop - start)))
                 fSol.write("no solution")
                 fSearch.close()
@@ -353,6 +357,8 @@ class IndonesianDotPuzzle:
         else:
             print("NO SOLUTION")
             stop = time.time()
+            print("Number of nodes in openlist: " + str(len(openlist.queue)))
+            print("Number of nodes in closedlist: " + str(len(closedlist)))
             print("time to run BFS: " + str((stop - start)))
             fSol.write("no solution")
             fSol.close()
@@ -393,6 +399,8 @@ class IndonesianDotPuzzle:
                 stop = time.time()
                 print("time to run A*: " + str((stop - start)))
                 outputSolutionPath(node, self.size, fSol)
+                print("Number of nodes in openlist: " + str(len(openlist.queue)))
+                print("Number of nodes in closedlist: " + str(len(closedlist)))
                 fSol.close()
                 fSearch.close()
                 return
@@ -404,6 +412,8 @@ class IndonesianDotPuzzle:
             if len(closedlist) >= self.max_length:
                 print("No solution within cutoff of max_length. Maximum length reach is  " + str(len(closedlist)))
                 stop = time.time()
+                print("Number of nodes in openlist: " + str(len(openlist.queue)))
+                print("Number of nodes in closedlist: " + str(len(closedlist)))
                 print("time to run A*: " + str((stop - start)))
                 fSol.write("no solution")
                 fSearch.close()
@@ -412,6 +422,8 @@ class IndonesianDotPuzzle:
         else:
             print("NO SOLUTION")
             stop = time.time()
+            print("Number of nodes in openlist: " + str(len(openlist.queue)))
+            print("Number of nodes in closedlist: " + str(len(closedlist)))
             print("time to run A*: " + str((stop - start)))
             fSol.write("no solution")
             fSearch.close()
